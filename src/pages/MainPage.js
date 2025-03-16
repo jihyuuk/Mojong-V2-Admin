@@ -1,9 +1,9 @@
-import { Button, Form, ListGroup, Offcanvas, Placeholder, Spinner, Stack } from 'react-bootstrap';
+import { Badge, Button, Form, ListGroup, Offcanvas, Placeholder, Spinner, Stack } from 'react-bootstrap';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import menu from "./dummyData.json";
 import { throttle } from 'lodash';
 
-function MainPage({ setSelectedItem, setShowShoppingCart, totalPrice }) {
+function MainPage({ setSelectedItem, setShowShoppingCart, totalPrice, cartItems }) {
 
     //현재 활성화된 카테고리
     const [activeCat, setActiveCat] = useState(0);
@@ -276,10 +276,19 @@ function MainPage({ setSelectedItem, setShowShoppingCart, totalPrice }) {
                     </div>
 
                     {/* 장바구니 버튼 */}
-                    <div className='p-2'>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-bag" viewBox="0 0 16 16">
-                            <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
-                        </svg>
+                    <div className='p-2' onClick={() => setShowShoppingCart(true)}>
+
+                        <div className='position-relative'>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-bag" viewBox="0 0 16 16">
+                                <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
+                            </svg>
+
+                            {cartItems.length > 0 &&
+                                <Badge pill bg="danger" className='position-absolute top-0 start-100 translate-middle mt-1' style={{ fontSize: '0.7rem' }}>
+                                    {cartItems.length}
+                                </Badge>
+                            }
+                        </div>
                     </div>
 
                 </div>

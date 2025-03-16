@@ -44,7 +44,7 @@ function App() {
       <TostProvider>
 
         {/* 메인 페이지 */}
-        <MainPage setSelectedItem={setSelectedItem} setShowShoppingCart={setShowShoppingCart} totalPrice={totalPrice} />
+        <MainPage setSelectedItem={setSelectedItem} setShowShoppingCart={setShowShoppingCart} totalPrice={totalPrice} cartItems={cartItems}/>
 
         {/* 아이템 상세 페이지 */}
         {selectedItem && (
