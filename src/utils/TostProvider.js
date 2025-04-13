@@ -10,6 +10,9 @@ export function TostProvider({ children }) {
     const [tostMsg, setTostMsg] = useState("");
 
     const showTost = (msg) => {
+        //이미 토스트 실행중이면 닫기
+        if(tostState) return;
+
         setTostMsg(msg); // 메시지 설정
         setTostState(true);
         setTimeout(() => {

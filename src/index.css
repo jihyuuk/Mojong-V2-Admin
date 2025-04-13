@@ -21,3 +21,11 @@ html,body, #root {
   /* 배경색상 */
   background-color: #EAEAEA ;
 }
+
+* {
+  /* 드래그, 복붙 막기 */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
