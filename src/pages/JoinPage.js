@@ -119,7 +119,6 @@ function JoinPage() {
 
 
     return (
-        <div className="z-1 position-absolute top-0 start-0 w-100 h-100 bg-white">
             <div className='d-flex align-items-center justify-content-center bg-white h-100'>
                 <div className='text-center p-5 w-100' style={{ maxWidth: '450px' }}>
                     <p className='mt-3 my-5 fw-semibold display-5'>회원가입</p>
@@ -164,7 +163,6 @@ function JoinPage() {
 
                 </div>
             </div>
-        </div>
     );
 }
 

@@ -86,7 +86,6 @@ function LonginPage() {
 
 
     return (
-        <div className="z-1 position-absolute top-0 start-0 w-100 h-100 bg-white">
             <div className='d-flex align-items-center justify-content-center bg-white h-100'>
                 <div className='text-center p-5 pt-0' style={{ maxWidth: '450px' }}>
 
@@ -114,7 +113,6 @@ function LonginPage() {
 
                 </div>
             </div>
-        </div>
     );
 }
 
