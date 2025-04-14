@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useToken } from "./TokenContext";
+import { useToken } from "../TokenContext";
 
 const AuthRoutes = () => {
 

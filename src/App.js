@@ -1,6 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import MainPage from './pages/MainPage';
 import DetailPage from './pages/DetailPage';
 import ShoppingCartPage from './pages/ShoppingCartPage';
 import { TostProvider } from './utils/TostProvider';
@@ -8,15 +7,17 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { ShoppingCartProvider, useShoppingCart } from './utils/ShoppingCartProvider';
 import { useEffect, useState } from 'react';
 import LoadingMain from './components/LoadingMain';
-import LoginPage from './pages/LoginPage';
-import JoinPage from './pages/JoinPage';
+import LoginPage from './pages/login/LoginPage';
+import JoinPage from './pages/login/JoinPage';
+import HistoryPage from './pages/staff/HistoryPage'
 import axios from 'axios';
 import axiosWithToken from './utils/axiosWithToken';
 import CashierOrderPage from './pages/CashierOrderPage';
 import SearchPage from './pages/SearchPage';
 import { TokenProvider } from './utils/TokenContext';
-import AuthRoutes from './utils/AuthRoutes';
-import PrivateRoutes from './utils/PrivateRoutes';
+import AuthRoutes from './utils/routes/AuthRoutes';
+import PrivateRoutes from './utils/routes/PrivateRoutes';
+import MainRoutes from './utils/routes/MainRotues';
 
 function App() {
 
@@ -89,17 +90,23 @@ function App() {
               <Routes>
 
                 {/* 로그인 후 이용 가능 */}
-                <Route element={<PrivateRoutes menu={menu} />}>
-                  {/* 더미 홈 */}
-                  <Route path="/" element={null} />
-                  {/* 검색 페이지 */}
-                  <Route path="/search" element={<SearchPage menu={menu} />} />
-                  {/* 아이템 상세 페이지 */}
-                  <Route path="/detail" element={<DetailPage />} />
-                  {/* 장바구니 페이지 */}
-                  <Route path="/shoppingCart" element={<ShoppingCartPage />} />
-                  {/* 직원결제 페이지 */}
-                  <Route path="/cashier-order" element={<CashierOrderPage fetchMenu={fetchMenu} />} />
+                <Route element={<PrivateRoutes />}>
+                  {/* 메인페이지 위에 레이어 쌓기 */}
+                  <Route element={<MainRoutes menu={menu} />}>
+                    {/* 더미 홈 */}
+                    <Route path="/" element={null} />
+                    {/* 검색 페이지 */}
+                    <Route path="/search" element={<SearchPage menu={menu} />} />
+                    {/* 아이템 상세 페이지 */}
+                    <Route path="/detail" element={<DetailPage />} />
+                    {/* 장바구니 페이지 */}
+                    <Route path="/shoppingCart" element={<ShoppingCartPage />} />
+                    {/* 직원결제 페이지 */}
+                    <Route path="/cashier-order" element={<CashierOrderPage fetchMenu={fetchMenu} />} />
+                  </Route>
+
+                  {/* 기타 */}
+                  <Route path="/history" element={<HistoryPage/>}/>
                 </Route>
 
                 {/* 로그인, 회원가입 페이지 */}
