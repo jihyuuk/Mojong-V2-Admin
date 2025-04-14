@@ -8,10 +8,13 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ShoppingCartProvider, useShoppingCart } from './utils/ShoppingCartProvider';
 import { useEffect, useState } from 'react';
 import LoadingMain from './components/LoadingMain';
+import LoginPage from './pages/LoginPage';
+import JoinPage from './pages/JoinPage';
 import axios from 'axios';
 import axiosWithToken from './utils/axiosWithToken';
 import CashierOrderPage from './pages/CashierOrderPage';
 import SearchPage from './pages/SearchPage';
+import { TokenProvider } from './utils/TokenContext';
 
 function App() {
 
@@ -78,29 +81,37 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>{/* react-rotuer-dom */}
-        <TostProvider>{/* 토스트 기능 context */}
-          <ShoppingCartProvider menu={menu}>
+        <TokenProvider>
+          <TostProvider>{/* 토스트 기능 context */}
+            <ShoppingCartProvider menu={menu}>
 
-            {/* 메인 페이지 */}
-            <MainPage menu={menu} />
 
-            <Routes>
-              {/* 더미 홈 */}
-              <Route path="/" element={null} /> 
-              
-              {/* 검색 페이지 */}
-              <Route path="/search" element={<SearchPage menu={menu} />} />
-              {/* 아이템 상세 페이지 */}
-              <Route path="/detail" element={<DetailPage />} />
-              {/* 장바구니 페이지 */}
-              <Route path="/shoppingCart" element={<ShoppingCartPage />} />
+              {/* 메인 페이지 */}
+              <MainPage menu={menu} />
 
-              {/* 직원결제 페이지 */}
-              <Route path="/cashier-order" element={<CashierOrderPage fetchMenu={fetchMenu} />} />
-            </Routes>
+              <Routes>
+                {/* 더미 홈 */}
+                <Route path="/" element={null} />
 
-          </ShoppingCartProvider>
-        </TostProvider>
+                {/* 검색 페이지 */}
+                <Route path="/search" element={<SearchPage menu={menu} />} />
+                {/* 아이템 상세 페이지 */}
+                <Route path="/detail" element={<DetailPage />} />
+                {/* 장바구니 페이지 */}
+                <Route path="/shoppingCart" element={<ShoppingCartPage />} />
+
+                {/* 직원결제 페이지 */}
+                <Route path="/cashier-order" element={<CashierOrderPage fetchMenu={fetchMenu} />} />
+
+                {/* 로그인 페이지 */}
+                <Route path="/login" element={<LoginPage />} />
+                {/* 회원가입 페이지 */}
+                <Route path="/join" element={<JoinPage />} />
+              </Routes>
+
+            </ShoppingCartProvider>
+          </TostProvider>
+        </TokenProvider>
       </BrowserRouter>
     </div>
   );
