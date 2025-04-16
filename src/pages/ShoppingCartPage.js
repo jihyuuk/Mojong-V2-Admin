@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTost } from "../utils/TostProvider";
 import SubHeader from "../components/SubHeader";
 import MotionPage from "../motions/MotionPage";
@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import { useShoppingCart } from "../utils/ShoppingCartProvider";
 import ShoppingCartList from "../components/ShoppingCartList";
+import ChangeAccordion from "../components/ChangeAccordion";
+import DiscountAccordion from "../components/DiscountAccordion";
 
 function ShoppingCartPage() {
 
@@ -16,6 +18,15 @@ function ShoppingCartPage() {
     const { showTost } = useTost();
     //장바구니
     const { cartItems, totalPrice, totalQuantity } = useShoppingCart();
+
+    //할인관련
+    const [finalAmount, setFinalAmount] = useState(totalPrice);
+    const [discountAmount, setDiscountAmount] = useState(0);
+
+    //할인 자동계산
+    useEffect(() => {
+        setFinalAmount(totalPrice - discountAmount);
+    }, [discountAmount, totalPrice]);
 
     //결제 방식
     const [payment, setPayment] = useState();
@@ -47,16 +58,6 @@ function ShoppingCartPage() {
         }
     }
 
-
-    //장바구니가 비었는데 직접 /shoppingcart로 접근시에 리다이렉트
-    // useEffect(() => {
-    //     if (!cartItems || cartItems.length === 0) {
-    //         navigate("/", { replace: true });
-    //     }
-    // }, []);
-
-    if (!cartItems || cartItems.length === 0) return null;
-
     return (
         <MotionPage> {/* 에니메이션 적용 */}
             <div className="d-flex flex-column h-100">
@@ -72,16 +73,41 @@ function ShoppingCartPage() {
                         <ShoppingCartList />
                     </div>
 
-
-                    {/* 합계 */}
-                    <div className="mt-3 bg-white shadow-sm p-3">
+                    {/* 합계, 할인 */}
+                    <div className="mt-3 bg-white p-3">
                         <div className="pb-3 fs-4 fw-semibold">합계</div>
-                        <div className="border border-success-subtle rounded-3">
-                            <div className=" d-flex justify-content-between p-3 fs-5 fw-medium">
+                        <div className="border border-success-subtle rounded-3 p-3">
+
+                            {discountAmount > 0 &&
+                                <div>
+                                    <div className='d-flex justify-content-between text-secondary'>
+                                        <div>
+                                            합계
+                                        </div>
+                                        <div>
+                                            <div>{totalPrice.toLocaleString('ko-KR')}원</div>
+                                        </div>
+                                    </div>
+                                    <div className='d-flex justify-content-between mt-1'>
+                                        <div className='text-secondary'>
+                                            할인
+                                        </div>
+                                        <div className="text-danger">
+                                            - {discountAmount.toLocaleString('ko-KR')}원
+                                        </div>
+                                    </div>
+
+                                    <hr />
+                                </div>
+                            }
+
+                            <div className=" d-flex justify-content-between fs-5 fw-medium">
                                 <div>총 금액 :</div>
-                                <div className="fw-semibold text-success">{totalPrice.toLocaleString("ko-KR")}원</div>
+                                <div className="fw-semibold text-success">{finalAmount.toLocaleString("ko-KR")}원</div>
                             </div>
                         </div>
+
+                        <DiscountAccordion setDiscountAmount={setDiscountAmount} totalPrice={totalPrice} />
                     </div>
 
 
@@ -90,25 +116,32 @@ function ShoppingCartPage() {
                         <div className="pb-3 fs-4 fw-semibold">결제 방식</div>
 
                         <div className="pb-2 text-center gap-2 d-flex fw-semibold">
-                            <div className={payment === "QR_CASHIER" ? "payment-on" : "payment-off"} onClick={() => setPayment("QR_CASHIER")}>
-                                <img alt="직원에게 결제" src={payment === "QR_CASHIER" ? "/cashier_on.png" : "/cashier_off.png"} style={{ width: '100px', height: '100px' }} />
-                                <div className="mt-3 fs-6">직원에게 결제</div>
+                            <div className={payment === "CARD" ? "payment-on" : "payment-off"} onClick={() => setPayment("CARD")}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" className="bi bi-credit-card me-2" viewBox="0 0 16 16">
+                                    <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z" />
+                                    <path d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
+                                </svg>
+                                <div className="mt-3 fs-6">카드 결제</div>
                             </div>
-                            <div className={payment === "QR_SELF" ? "payment-on" : "payment-off"} onClick={() => setPayment("QR_SELF")}>
-                                <img alt="셀프결제" src={payment === "QR_SELF" ? "/self_on.png" : "/self_off.png"} style={{ width: '100px', height: '100px', marginRight: '30px' }} />
-                                <div className="mt-3 fs-6">셀프 결제</div>
+                            <div className={payment === "CASH" ? "payment-on" : "payment-off"} onClick={() => setPayment("CASH")}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" className="bi bi-coin py-2" viewBox="0 0 16 16">
+                                    <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518z" />
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                    <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11m0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12" />
+                                </svg>
+                                <div className="mt-3 fs-6">현금 결제</div>
                             </div>
                         </div>
 
                         {/* 선택 x */}
                         {!payment && <div className="text-danger ps-2">※ 결제 방식을 선택해주세요.</div>}
-                        {/* 직원결제 선택 */}
-                        {payment === "QR_CASHIER" && <div className="ps-2">※ 직원에게 결제하고 수령하는 방식입니다.</div>}
-                        {/* 셀프결제 선택 */}
-                        {payment === "QR_SELF" && <div className="ps-2">※ 직원 없이 직접 결제하고 수령하는 방식입니다.</div>}
+                        {/* 카드결제 선택 */}
+                        {payment === "CARD" && <div className="ps-2">※ 카드 단말기로 결제해주세요.</div>}
+                        {/* 현금결제 선택 */}
+                        {payment === "CASH" && <ChangeAccordion finalAmount={finalAmount} />}
 
                         {/* 여백 */}
-                        <div style={{ height: '4rem' }}></div>
+                        <div style={{ height: '15rem' }}></div>
                     </div>
 
                 </main>
@@ -117,12 +150,12 @@ function ShoppingCartPage() {
                 {/* 푸터 */}
                 <Footer
                     value={"주문하기"}
-                    show={totalPrice > 0}
+                    show={finalAmount > 0}
                     onClick={orderClick}
                 >
                     <div className='pt-0 p-2 d-flex justify-content-between text-secondary'>
                         <div>품목 <span className='fw-semibold'>{cartItems.length}</span> · 수량 <span className='fw-semibold'>{totalQuantity}</span></div>
-                        <div className='text-success'>총 합계 <span className='fw-semibold'>{totalPrice.toLocaleString('ko-KR')}</span>원</div>
+                        <div className='text-success'>총 합계 <span className='fw-semibold'>{finalAmount.toLocaleString('ko-KR')}</span>원</div>
                     </div>
                 </Footer>
 

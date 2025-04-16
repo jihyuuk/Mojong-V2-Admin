@@ -76,6 +76,22 @@ a {
   width: 50%;
 }
 
+/* 아코디어 효과 지우기 */
+.accordion-button:not(.collapsed) {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+.accordion-button:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* 서브 카테고리 */
+.selected{
+  font-weight: bold;
+  color:#198754;
+  border-bottom: 3px solid #198754;
+}
 
 /* 정산 로딩 */
 .circle-loader {

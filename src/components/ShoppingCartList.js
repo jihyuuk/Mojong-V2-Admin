@@ -114,7 +114,7 @@ function ShoppingCartList() {
             {/* 추가하기 버튼 */}
             <div className='p-2 text-center'>
                 <span className="px-3 py-2 fs-5 text-secondary" onClick={() => navigate(-1)}>
-                    + 추가하기
+                    + 직접입력
                 </span>
             </div>
 
