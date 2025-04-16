@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Form } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import SearchList from "../components/SearchList";
 import ItemList from "../components/ItemList";
 
@@ -20,7 +20,7 @@ function SearchPage({ menu }) {
         return localHistory ? JSON.parse(localHistory) : [];
     });
     //자동저장(기본값 : 켜기)========================
-    const [isHistoryDisabled, setIsHistoryDisabled] = useState(()=>{
+    const [isHistoryDisabled, setIsHistoryDisabled] = useState(() => {
         return window.localStorage.getItem("isHistoryDisabled") === "true";
     });
 
@@ -90,7 +90,7 @@ function SearchPage({ menu }) {
     }
     //5.아이템 클릭시 히스토리 저장
     const saveHistory = (itemName) => {
-        if(isHistoryDisabled) return;
+        if (isHistoryDisabled) return;
         setSearchHistory((prevHistory) => {
             const filteredHistory = prevHistory.filter(prev => prev !== itemName); // 중복 제거
             const updatedHistory = [itemName, ...filteredHistory]; // 맨 앞에 추가
@@ -166,7 +166,8 @@ function SearchPage({ menu }) {
                                 {!isHistoryDisabled && <div className="pe-2 border-end" onClick={clearAll}>전체삭제</div>}
 
                                 <div className="px-2">자동저장</div>
-                                <Form.Check 
+
+                                <Form.Check
                                     onChange={onOffClick}
                                     type="switch"
                                     id="custom-switch"
@@ -194,11 +195,29 @@ function SearchPage({ menu }) {
                 {/* 검색결과 */}
                 {searchValue.length > 0 &&
                     <>
-                        <div className='p-2 pt-0 ps-3 bg-white fw-semibold text-success'>
+                        <div className='p-2 pt-0 px-3 bg-white fw-semibold text-success'>
                             검색 결과 : {searchResults.length}개
                         </div>
 
                         <div className='flex-grow-1 overflow-y-auto bg-body-secondary border-top'>
+
+                            {/* 결과없을때 */}
+                            {searchResults.length === 0 &&
+                                <div className="text-secondary text-center mt-3" >
+                                    <div>
+                                        찾으시는 상품이 없으신가요? <br />
+                                        직접 입력해서 추가하실 수 있어요!
+                                    </div>
+                                    <div className="mt-4">
+                                        <span
+                                            className="bg-white px-3 py-2 border border-1 border-success-subtle shadow-sm rounded-3"
+                                            onClick={() => navigate("/custom-item", { state: { itemName: searchValue.trim() } })}
+                                        >
+                                            "{searchValue.trim()}" 직접 입력하기
+                                        </span>
+                                    </div>
+                                </div>
+                            }
 
                             {/* 검색결과 리스트*/}
                             <div className='bg-white shadow-sm'>

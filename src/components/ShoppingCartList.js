@@ -1,6 +1,6 @@
 import React from "react";
 import { useShoppingCart } from "../utils/ShoppingCartProvider";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTost } from "../utils/TostProvider";
 
 function ShoppingCartList() {
@@ -21,28 +21,28 @@ function ShoppingCartList() {
     }
 
     //수량 플러스
-     const clickPlus = (target) => {
+    const clickPlus = (target) => {
         //최대 수량 검증
-        if(target.quantity >= 9999) return;
+        if (target.quantity >= 9999) return;
 
         setCartItems(prevItems =>
-          prevItems.map(item => {
-            if (item.id !== target.id) return item;
-      
-            if (item.quantity >= item.stock) {
-              showTost(`재고가 부족합니다. (재고: ${item.stock}개)`);
-              return item;
-            }
-      
-            return { ...item, quantity: item.quantity + 1 };
-          })
+            prevItems.map(item => {
+                if (item.id !== target.id) return item;
+
+                if (item.quantity >= item.stock) {
+                    showTost(`재고가 부족합니다. (재고: ${item.stock}개)`);
+                    return item;
+                }
+
+                return { ...item, quantity: item.quantity + 1 };
+            })
         );
-       };
+    };
 
     //수량 마이너스
     const clickMinus = (target) => {
         //1 이하 검증
-        if(target.quantity <= 1) return;
+        if (target.quantity <= 1) return;
 
         setCartItems(prevItems => prevItems.map(
             item => {
@@ -113,9 +113,11 @@ function ShoppingCartList() {
 
             {/* 추가하기 버튼 */}
             <div className='p-2 text-center'>
-                <span className="px-3 py-2 fs-5 text-secondary" onClick={() => navigate(-1)}>
-                    + 직접입력
-                </span>
+                <Link to="/custom-item">
+                    <span className="px-3 py-2 fs-5 text-secondary">
+                        + 직접입력
+                    </span>
+                </Link>
             </div>
 
         </div>
