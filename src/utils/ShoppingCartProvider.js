@@ -32,15 +32,16 @@ export function ShoppingCartProvider({ children }) {
 
         const updatedCart = savedCart.map((item) => {
             const menuItem = menu.flatMap(category => category.items).find(menuItem => menuItem.id === item.id);
-          
-            //현재 판매중이 아니거나 재고가 없으면 지우기
-            if (!menuItem || menuItem.stock <= 0) return null;
-            //재고 이하로 수량 조절하기
-            const validQuantity = Math.min(item.quantity, menuItem.stock); 
 
-            //업데이트
-            return { ...menuItem, quantity: validQuantity };
-          }).filter(Boolean); // null 제거
+            if (menuItem) {
+                //메뉴에 있으면 수량만 적용 <= 그래야 업데이트된 가격,설명 적용가능
+                return { ...menuItem, quantity: item.quantity }
+            } else {
+                // 메뉴에 없으면(커스텀 아이템) 그대로 사용
+                return item;
+            }
+
+        });
 
         //적용하기
         setCartItems(updatedCart);
@@ -53,6 +54,9 @@ export function ShoppingCartProvider({ children }) {
 
     //총 수량, 품목수, 금액 계산 
     useEffect(() => {
+
+        if (!menu || menu.length === 0) return;
+
         let calPrice = 0;
         let calQuantity = 0;
 
@@ -66,13 +70,7 @@ export function ShoppingCartProvider({ children }) {
         setTotalQuantity(calQuantity);
 
         //로컬 스토리지 저장
-        //id랑 수량만 저장하기
-        localStorage.setItem("cartItems", JSON.stringify(
-            cartItems.map(item => ({
-              id: item.id,
-              quantity: item.quantity
-            }))
-          ));
+        localStorage.setItem("cartItems", JSON.stringify(cartItems));
     }, [cartItems]);
 
     return (
