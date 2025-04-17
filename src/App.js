@@ -19,6 +19,8 @@ import MemberPage from './pages/staff/MemberPage';
 import CustomProductPage from './pages/staff/CustomProductPage';
 import ProductPage from './pages/staff/ProductPage';
 import { MenuProvider } from './utils/MenuProvider';
+import AddItemPage from './pages/staff/AddItemPage';
+import EditItemPage from './pages/staff/EditItemPage';
 
 function App() {
 
@@ -53,7 +55,10 @@ function App() {
                     <Route path="/history/:id" element={<HistoryDetailPage />} />
 
                     <Route path="/members" element={<MemberPage />} />
-                    <Route path="/product" element={<ProductPage />} />
+                    <Route path="/product" element={<ProductPage />}>
+                      <Route path="add" element={<AddItemPage />} />
+                      <Route path="edit" element={<EditItemPage />} />
+                    </Route>
                   </Route>
 
                   {/* 로그인, 회원가입 페이지 */}
