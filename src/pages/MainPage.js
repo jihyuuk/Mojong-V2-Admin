@@ -7,11 +7,15 @@ import Footer from '../components/Footer';
 import { useShoppingCart } from '../utils/ShoppingCartProvider';
 import MainFooter from '../components/MainFooter';
 import HamburgerList from '../components/HamburgerList';
+import { useMenu } from '../utils/MenuProvider';
 
-function MainPage({ menu }) {
+function MainPage() {
 
     //리액트 라우터
     const navigate = useNavigate();
+
+    //메뉴
+    const { menu } = useMenu();
 
     //장바구니 정보
     const { cartItems, totalPrice } = useShoppingCart();
@@ -122,7 +126,7 @@ function MainPage({ menu }) {
                 <div className="p-2 pt-3 pb-1 d-flex align-items-center">
 
                     {/* 햄버거 메뉴 */}
-                    <HamburgerList/>
+                    <HamburgerList />
 
                     {/* 검색창 */}
                     <Form.Control size="lg" id='searchBar' type="text"
@@ -133,7 +137,7 @@ function MainPage({ menu }) {
                     />
 
                     {/* 장바구니 아이콘 */}
-                    <div className='p-2' onClick={()=>navigate("/shoppingCart")}>
+                    <div className='p-2' onClick={() => navigate("/shoppingCart")}>
                         <div className='position-relative'>
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
                                 <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
