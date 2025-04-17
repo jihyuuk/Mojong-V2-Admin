@@ -30,8 +30,7 @@ function ShoppingCartList() {
                 if (item.id !== target.id) return item;
 
                 if (item.quantity >= item.stock) {
-                    showTost(`재고가 부족합니다. (재고: ${item.stock}개)`);
-                    return item;
+                    showTost(`재고 확인 필요! (재고: ${item.stock}개)`);
                 }
 
                 return { ...item, quantity: item.quantity + 1 };

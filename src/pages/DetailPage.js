@@ -40,13 +40,6 @@ function DetailPage() {
         const existingQuantity = existingItemIndex !== -1 ? cartItems[existingItemIndex].quantity : 0;
         const totalQuantity = existingQuantity + quantity;
 
-        // 재고 초과 검증
-        if (totalQuantity > item.stock) {
-            const cartText = existingQuantity > 0 ? `, 장바구니: ${existingQuantity}개` : '';
-            showTost(`재고가 부족합니다. (재고: ${item.stock}개${cartText})`);
-            return;
-        }
-
         // 장바구니 업데이트
         setCartItems(prevItems => {
             if (existingItemIndex !== -1) {
@@ -59,7 +52,14 @@ function DetailPage() {
             return [...prevItems, { ...item, quantity }];
         });
 
-        showTost("장바구니 추가 완료");
+        // 재고 초과 검증
+        if (totalQuantity > item.stock) {
+            const cartText = existingQuantity > 0 ? `, 장바구니: ${existingQuantity}개` : '';
+            showTost(`재고 확인 필요! (재고: ${item.stock}개${cartText})`);
+        } else {
+            showTost("장바구니 추가 완료");
+        }
+
         navigate(-1);
     };
 
