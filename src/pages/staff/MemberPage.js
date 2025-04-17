@@ -43,7 +43,7 @@ function MemberPage() {
             </div>
 
             {/* 뷰 */}
-            <div className='my-content bg-white'>
+            <div className='flex-grow-1 overflow-y-auto bg-white'>
                 {selected === "members" && <MemeberView members={members} setMembers={setMembers} />}
                 {selected === "approvals" && <ApprovalView members={members} setMembers={setMembers} />}
             </div>

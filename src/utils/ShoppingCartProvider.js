@@ -1,10 +1,14 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
+import { useMenu } from "./MenuProvider";
 
 //1. Context 생성
 const ShoppingCartContext = createContext();
 
 //2. Provider 컴포넌트 생성
-export function ShoppingCartProvider({ children, menu }) {
+export function ShoppingCartProvider({ children }) {
+
+    //메뉴
+    const { menu } = useMenu();
 
     //장바구니에 담긴 아이템들
     const [cartItems, setCartItems] = useState([]);
@@ -23,7 +27,7 @@ export function ShoppingCartProvider({ children, menu }) {
         if (!savedCart || savedCart === "[]") return;
 
         //있으면 검증
-        //menu 돌면서 품절이거나 없는 상품인지 확인
+        //menu 돌면서 품절이거나 없는 상품인지 확인 <================직원에서는 불필요
         savedCart = JSON.parse(savedCart);
 
         const updatedCart = savedCart.map((item) => {

@@ -2,8 +2,12 @@ import axios from "axios";
 import React from "react";
 import { Button, ListGroup, ListGroupItem } from "react-bootstrap";
 import axiosWithToken from "../utils/axiosWithToken";
+import { useTost } from "../utils/TostProvider";
 
 function MemeberView({ members, setMembers }) {
+
+    //토스트
+    const { showTost } = useTost();
 
     //차단
     const block = (user) => {
@@ -11,6 +15,7 @@ function MemeberView({ members, setMembers }) {
             .then((response) => {
                 //맴버 업데이트
                 setMembers(prev => prev.map(u => u.id !== user.id ? u : { ...u, enabled: false }));
+                showTost("차단 성공!");
             })
             .catch((error) => {
                 alert("차단 실패");
@@ -23,6 +28,7 @@ function MemeberView({ members, setMembers }) {
             .then((response) => {
                 //맴버 업데이트
                 setMembers(prev => prev.map(u => u.id !== user.id ? u : { ...u, enabled: true }));
+                showTost("차단 해제 성공!")
             })
             .catch((error) => {
                 alert("차단 실패");

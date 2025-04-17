@@ -3,9 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
 import SearchList from "../components/SearchList";
 import ItemList from "../components/ItemList";
+import { useMenu } from "../utils/MenuProvider";
 
-function SearchPage({ menu }) {
+function SearchPage() {
 
+    const { menu } = useMenu();
     const navigate = useNavigate();
 
     //검색기능================================

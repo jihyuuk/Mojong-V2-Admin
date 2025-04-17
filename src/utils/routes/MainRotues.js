@@ -1,15 +1,18 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useToken } from "../TokenContext";
 import MainPage from "../../pages/MainPage";
+import { useMenu } from "../MenuProvider";
+import LoadingMain from "../../components/LoadingMain";
 
-const MainRoutes = ({ menu }) => {
+const MainRoutes = () => {
+
+    const { menu, isLoading } = useMenu();
 
     return (
         <>
             {/* 메인 페이지 */}
-            <MainPage menu={menu} />
+            {isLoading ? <LoadingMain /> : <MainPage menu={menu} />}
             {/* 기타경로 */}
-            <Outlet/>
+            <Outlet />
         </>
     );
 };

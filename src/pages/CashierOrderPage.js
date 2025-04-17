@@ -4,8 +4,11 @@ import { useNavigate } from "react-router-dom";
 import axiosWithToken from "../utils/axiosWithToken";
 import { Button } from "react-bootstrap";
 import Footer from "../components/Footer";
+import { useMenu } from "../utils/MenuProvider";
 
-function CashierOrderPage({ fetchMenu }) {
+function CashierOrderPage() {
+
+    const { fetchMenu } = useMenu();
 
     //장바구니
     const { cartItems, totalPrice, setCartItems } = useShoppingCart();

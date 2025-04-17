@@ -1,8 +1,12 @@
 import React from "react";
 import { Button, ListGroup, ListGroupItem } from "react-bootstrap";
 import axiosWithToken from "../utils/axiosWithToken";
+import { useTost } from "../utils/TostProvider";
 
 function ApprovalView({ members, setMembers }) {
+
+    //토스트
+    const { showTost } = useTost();
 
     //거부
     const handleReject = (user) => {
@@ -11,6 +15,7 @@ function ApprovalView({ members, setMembers }) {
             .then((response) => {
                 //맴버 업데이트
                 setMembers(prev => prev.filter(u => u.id !== user.id));
+                showTost("거부 성공!");
             })
             .catch((error) => {
                 alert("승인 거부 실패");
@@ -24,6 +29,7 @@ function ApprovalView({ members, setMembers }) {
             .then((response) => {
                 //맴버 업데이트
                 setMembers(prev => prev.map(u => u.id !== user.id ? u : { ...u, approved: true, enabled : true }))
+                showTost("승인 성공!");
             })
             .catch((error) => {
                 alert("승인 실패");
