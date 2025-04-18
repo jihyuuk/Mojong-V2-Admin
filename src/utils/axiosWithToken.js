@@ -2,7 +2,7 @@ import axios from 'axios';
 
 //Axios 인스턴스 생성
 const axiosWithToken = axios.create({
-    baseURL: 'http://192.168.0.3:8080'
+    baseURL: process.env.REACT_APP_BASE_URL
 });
 
 //요청 인터셉터 설정
