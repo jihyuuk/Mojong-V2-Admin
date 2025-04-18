@@ -43,20 +43,26 @@ export function TokenProvider({ children }) {
             const jwt = token.startsWith('Bearer ') ? token.slice(7) : token;
             const base64Url = jwt.split('.')[1];
             const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            
+
             // 한글 깨짐 방지 처리!
             const jsonPayload = decodeURIComponent(escape(atob(base64)));
             const payload = JSON.parse(jsonPayload);
-          
+
+            if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) {
+                console.warn("⏰ 토큰 만료됨");
+                removeToken();
+                return;
+            }
+
+            //유저, 권한 업데이트
             setUsername(payload.username || "");
             setRole(payload.role || "ROLE_STAFF");
-          
-          } catch (e) {
+        } catch (e) {
             console.error("토큰 디코딩 오류:", e);
             setUsername("");
             setRole("ROLE_STAFF");
-          }
-          
+        }
+
     }, [token]);
 
     //제공변수들
