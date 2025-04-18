@@ -5,11 +5,8 @@ import { useToken } from "../utils/TokenContext";
 
 function HamburgerList() {
 
-  const role = "ROLE_ADMIN";
-  const username = "홍길동3"
-
   //토큰
-  const { removeToken } = useToken();
+  const { removeToken, username, role } = useToken();
 
   //라우터
   const navigate = useNavigate();
