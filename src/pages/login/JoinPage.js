@@ -119,50 +119,50 @@ function JoinPage() {
 
 
     return (
-            <div className='d-flex align-items-center justify-content-center bg-white h-100'>
-                <div className='text-center p-5 w-100' style={{ maxWidth: '450px' }}>
-                    <p className='mt-3 my-5 fw-semibold display-5'>회원가입</p>
+        <div className='d-flex justify-content-center bg-white h-100'>
+            <div className='text-center p-5 w-100' style={{ maxWidth: '450px' }}>
+                <p className='mt-3 my-5 fw-semibold display-5'>회원가입</p>
 
-                    <Form action='/' onSubmit={handleSubmit} className='mb-4'>
+                <Form action='/' onSubmit={handleSubmit} className='mb-4'>
 
-                        <FloatingLabel controlId="joinId" label="직원명" className="mb-4">
-                            <Form.Control type="text" placeholder="홍길동" value={username} onChange={(e) => nameChange(e.target.value.trim())} isInvalid={inVaildUserName} />
-                            <Form.Control.Feedback type="invalid" className='text-start'>{fbMsgUserName}</Form.Control.Feedback>
-                        </FloatingLabel>
+                    <FloatingLabel controlId="joinId" label="직원명" className="mb-4">
+                        <Form.Control type="text" placeholder="홍길동" value={username} onChange={(e) => nameChange(e.target.value.trim())} isInvalid={inVaildUserName} />
+                        <Form.Control.Feedback type="invalid" className='text-start'>{fbMsgUserName}</Form.Control.Feedback>
+                    </FloatingLabel>
 
-                        <FloatingLabel controlId="joinPassword" label="비밀번호" className="mb-2">
-                            <Form.Control type="password" placeholder="비밀번호" value={pwd} onChange={(e) => pwdChange(e.target.value.trim())} isInvalid={inVaildPwd} />
-                            <Form.Control.Feedback type="invalid" className='text-start'>{fbMsgPwd}</Form.Control.Feedback>
-                        </FloatingLabel>
+                    <FloatingLabel controlId="joinPassword" label="비밀번호" className="mb-2">
+                        <Form.Control type="password" placeholder="비밀번호" value={pwd} onChange={(e) => pwdChange(e.target.value.trim())} isInvalid={inVaildPwd} />
+                        <Form.Control.Feedback type="invalid" className='text-start'>{fbMsgPwd}</Form.Control.Feedback>
+                    </FloatingLabel>
 
-                        <FloatingLabel controlId="joinPasswordCheck" label="비밀번호 확인" className="mb-2">
-                            <Form.Control type="password" placeholder="비밀번호 확인" value={pwdCheck} onChange={(e) => pwdCheckChange(e.target.value.trim())} isInvalid={inVaildPwdCheck} />
-                            <Form.Control.Feedback type="invalid" className='text-start'>{fbMsgPwdCheck}</Form.Control.Feedback>
-                        </FloatingLabel>
-                        <p className='text-secondary text-start mb-3'>관리자의 승인 후 이용 가능합니다.</p>
+                    <FloatingLabel controlId="joinPasswordCheck" label="비밀번호 확인" className="mb-2">
+                        <Form.Control type="password" placeholder="비밀번호 확인" value={pwdCheck} onChange={(e) => pwdCheckChange(e.target.value.trim())} isInvalid={inVaildPwdCheck} />
+                        <Form.Control.Feedback type="invalid" className='text-start'>{fbMsgPwdCheck}</Form.Control.Feedback>
+                    </FloatingLabel>
+                    <p className='text-secondary text-start mb-3'>관리자의 승인 후 이용 가능합니다.</p>
 
-                        <Toast onClose={() => setShow(false)} show={show} delay={5000} autohide className='p-0 border-0'>
-                            <Alert variant='success' className='m-0 d-flex align-items-center'>
-                                <div className='me-2'>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-check-circle me-2" viewBox="0 0 16 16">
-                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                                        <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <div className=''>신청이 완료되었습니다.</div>
-                                    <div>관리자 승인 후 이용 가능합니다.</div>
-                                </div>
-                            </Alert>
-                        </Toast>
+                    <Toast onClose={() => setShow(false)} show={show} delay={5000} autohide className='p-0 border-0'>
+                        <Alert variant='success' className='m-0 d-flex align-items-center'>
+                            <div className='me-2'>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-check-circle me-2" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                    <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05" />
+                                </svg>
+                            </div>
+                            <div>
+                                <div className=''>신청이 완료되었습니다.</div>
+                                <div>관리자 승인 후 이용 가능합니다.</div>
+                            </div>
+                        </Alert>
+                    </Toast>
 
-                        <Button type='submit' variant='success' className='fs-5 fw-semibold w-100 mt-4 mb-2 rounded-5 py-2'>가입신청</Button>
-                    </Form>
+                    <Button type='submit' variant='success' className='fs-5 fw-semibold w-100 mt-4 mb-2 rounded-5 py-2'>가입신청</Button>
+                </Form>
 
-                    <Link to='/login' className='text-success'>로그인 페이지</Link>
+                <Link to='/login' className='text-success'>로그인 페이지</Link>
 
-                </div>
             </div>
+        </div>
     );
 }
 
