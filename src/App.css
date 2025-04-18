@@ -155,6 +155,22 @@ a {
   transform: translate(-50%, -50%);
 }
 
+/* 판매기록 페이징 */
+.my-pagination .page-item .page-link {
+  z-index: 2;
+  color: #198754; /* Bootstrap success green */
+}
+
+.my-pagination .page-item.active .page-link {
+  background-color: #198754;
+  border-color: #198754;
+  color: white;
+}
+
+.my-pagination .page-item .page-link:hover {
+  color: #145c32; /* 진한 초록 */
+}
+
 @keyframes loader-spin {
   0% {
     transform: rotate(0deg);

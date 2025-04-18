@@ -21,6 +21,7 @@ import ProductPage from './pages/staff/ProductPage';
 import { MenuProvider } from './utils/MenuProvider';
 import AddItemPage from './pages/staff/AddItemPage';
 import EditItemPage from './pages/staff/EditItemPage';
+import AllHistoryPage from './pages/staff/AllHistoryPage';
 
 function App() {
 
@@ -51,13 +52,21 @@ function App() {
 
                     {/* 기타 */}
                     <Route path='/custom-item' element={<CustomProductPage />} />
-                    <Route path="/history" element={<HistoryPage />} />
-                    <Route path="/history/:id" element={<HistoryDetailPage />} />
+                    <Route path="/history" element={<HistoryPage />}>
+                      <Route path=":id" element={<HistoryDetailPage />} />
+                    </Route>
 
+                
+                    {/* 직원관리 */}
                     <Route path="/members" element={<MemberPage />} />
+                    {/* 상품관리 */}
                     <Route path="/product" element={<ProductPage />}>
                       <Route path="add" element={<AddItemPage />} />
                       <Route path="edit" element={<EditItemPage />} />
+                    </Route>
+                    {/* 전체 판매 기록 */}
+                    <Route path="/all-history" element={<AllHistoryPage/>}>
+                      <Route path=":id" element={<HistoryDetailPage />} />
                     </Route>
                   </Route>
 
