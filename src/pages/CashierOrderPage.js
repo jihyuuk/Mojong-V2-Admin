@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useShoppingCart } from "../utils/ShoppingCartProvider";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axiosWithToken from "../utils/axiosWithToken";
 import { Button } from "react-bootstrap";
 import Footer from "../components/Footer";
@@ -10,44 +10,37 @@ function CashierOrderPage() {
 
     const { fetchMenu } = useMenu();
 
+    const location = useLocation();
+    const orderData = location?.state?.orderData;
+
     //장바구니
-    const { cartItems, totalPrice, setCartItems } = useShoppingCart();
+    const { cartItems, setCartItems } = useShoppingCart();
+
     //리액트 라우터
     const navigate = useNavigate();
 
     //주문상태
     const [orderState, setOrderState] = useState("loading");
-    const [saleId, setSaleId] = useState();
+    const [saleId, setSaleId] = useState(-1);
 
     //주문 로직
     useEffect(() => {
 
-        //장바구니 없이 직접 /cashier-order로 접근시 리다이렉트
-        if (!cartItems || cartItems.length === 0) {
+        //검증
+        if (!cartItems || cartItems.length === 0 || !orderData) {
             navigate("/", { replace: true });
             return;
-        }
-
-        //json 데이터 생성
-        const orderData = {
-            items: cartItems.map(item => ({
-                id: item.id,
-                name: item.name,
-                price: item.price,
-                quantity: item.quantity,
-                totalAmount: (item.price * item.quantity),
-            })),
-            totalAmount: totalPrice,
-            discountAmount: 0,
-            finalAmount: totalPrice,
-            payment: "QR_CASHIER"
         }
 
         //서버로 전송
         axiosWithToken.post("/order", orderData)
             .then((response) => {
+                //장바구니, 메뉴 초기화
+                setCartItems([]);
+                fetchMenu();
+                //상태적용
                 setOrderState("success");
-                setSaleId(response.data)
+                setSaleId(response.data.saleId);
             })
             .catch((error) => {
                 setOrderState("fail");
@@ -55,8 +48,6 @@ function CashierOrderPage() {
 
     }, []);
 
-
-    if (!cartItems || cartItems.length === 0) return null;
 
     return (
         <div className="z-1 position-absolute top-0 start-0 w-100 h-100 bg-white">
@@ -84,10 +75,6 @@ function CashierOrderPage() {
                     </div>
 
                     <Footer value={"홈으로"} show={true} onClick={() => {
-                        //장바구니 초기화 
-                        setCartItems([]);
-                        //메뉴 초기화
-                        fetchMenu();
                         //홈화면 이동
                         navigate(-2);
                     }}

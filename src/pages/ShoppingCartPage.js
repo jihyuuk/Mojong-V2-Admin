@@ -2,17 +2,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { useTost } from "../utils/TostProvider";
 import SubHeader from "../components/SubHeader";
 import MotionPage from "../motions/MotionPage";
-import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import { useShoppingCart } from "../utils/ShoppingCartProvider";
 import ShoppingCartList from "../components/ShoppingCartList";
 import ChangeAccordion from "../components/ChangeAccordion";
 import DiscountAccordion from "../components/DiscountAccordion";
+import OrderModal from "../components/modals/OrderModal";
 
 function ShoppingCartPage() {
-
-    //리액트 라우터
-    const navigate = useNavigate();
 
     //토스트
     const { showTost } = useTost();
@@ -32,9 +29,12 @@ function ShoppingCartPage() {
     const [payment, setPayment] = useState();
     const paymentSectionRef = useRef(null);
 
+    //주문확인 모달
+    const [showModal, setShowModal] = useState(false);
 
     //주문버튼 클릭
     const orderClick = () => {
+
         //결제 방식 선택 안 했을때
         if (!payment) {
             showTost("결제 방식을 선택해주세요.");
@@ -46,16 +46,9 @@ function ShoppingCartPage() {
 
             return;
         }
-        //직원결제
-        if (payment === "QR_CASHIER") {
-            navigate("/cashier-order");
-            return;
-        }
-        //토스결제
-        if (payment === "QR_SELF") {
-            navigate("/self-order");
-            return;
-        }
+
+        //모달 보여주기
+        setShowModal(true);
     }
 
     return (
@@ -116,7 +109,7 @@ function ShoppingCartPage() {
                         <div className="pb-3 fs-4 fw-semibold">결제 방식</div>
 
                         <div className="pb-2 text-center gap-2 d-flex fw-semibold">
-                            <div className={payment === "CARD" ? "payment-on" : "payment-off"} onClick={() => setPayment("CARD")}>
+                            <div className={payment === "CREDIT_CARD" ? "payment-on" : "payment-off"} onClick={() => setPayment("CREDIT_CARD")}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" className="bi bi-credit-card me-2" viewBox="0 0 16 16">
                                     <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z" />
                                     <path d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
@@ -136,12 +129,12 @@ function ShoppingCartPage() {
                         {/* 선택 x */}
                         {!payment && <div className="text-danger ps-2">※ 결제 방식을 선택해주세요.</div>}
                         {/* 카드결제 선택 */}
-                        {payment === "CARD" && <div className="ps-2">※ 카드 단말기로 결제해주세요.</div>}
+                        {payment === "CREDIT_CARD" && <div className="ps-2">※ 카드 단말기로 결제해주세요.</div>}
                         {/* 현금결제 선택 */}
                         {payment === "CASH" && <ChangeAccordion finalAmount={finalAmount} />}
 
                         {/* 여백 */}
-                        <div style={{ height: '15rem' }}></div>
+                        <div style={{ height: '9rem' }}></div>
                     </div>
 
                 </main>
@@ -160,6 +153,15 @@ function ShoppingCartPage() {
                 </Footer>
 
             </div>
+
+            {/* 주문 확인 모달 */}
+            <OrderModal
+                showModal={showModal}
+                setShowModal={setShowModal}
+                discountAmount={discountAmount}
+                finalAmount={finalAmount}
+                payment={payment}
+            />
         </MotionPage>
     )
 }

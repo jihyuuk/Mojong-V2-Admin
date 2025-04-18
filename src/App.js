@@ -46,7 +46,7 @@ function App() {
                       {/* 장바구니 페이지 */}
                       <Route path="/shoppingCart" element={<ShoppingCartPage />} />
                       {/* 직원결제 페이지 */}
-                      <Route path="/cashier-order" element={<CashierOrderPage />} />
+                      <Route path="/order" element={<CashierOrderPage />} />
                     </Route>
 
                     {/* 기타 */}
