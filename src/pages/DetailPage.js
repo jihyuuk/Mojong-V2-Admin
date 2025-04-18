@@ -135,9 +135,11 @@ function DetailPage() {
                         </div>
 
                         {/* 사진 */}
-                        <div>
-                            <img src={item.photo} alt="상품 사진" className='rounded-3' style={{ width: '5rem' }} />
-                        </div>
+                        {item.photo &&
+                            <div>
+                                <img src={item.photo} alt="상품 사진" className='rounded-3' style={{ width: '5rem' }} />
+                            </div>
+                        }
                     </div>
 
                     {/* 설명 */}

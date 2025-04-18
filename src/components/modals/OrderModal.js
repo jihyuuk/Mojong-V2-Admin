@@ -64,27 +64,33 @@ function OrderModal({ showModal, setShowModal, finalAmount, payment, discountAmo
             </ModalHeader>
 
             <ModalBody className='fs-4'>
-                <div className="mb-2">
+                <div className="mb-1">
+                    <div className="text-secondary mb-3" style={{ fontSize: '1rem' }}>
+                        <span >품목 {cartItems.length}</span>
+                        <span > · 총 수량 {totalQuantity}</span>
+                    </div>
                     <div className="text-muted small mb-1">주문 항목</div>
                     <div className="fs-5 fw-bold ps-1">{getCartSummary()}</div>
                 </div>
 
-                <div className="mb-1">
-                    <div className="text-muted small mb-1">품목 수</div>
-                    <div className="ps-1" style={{ fontSize: '1rem' }}>{cartItems.length}개</div>
+                <div className="mb-3">
+
                 </div>
 
-                <div className="mb-3">
-                    <div className="text-muted small mb-1">총 수량</div>
-                    <div className="ps-1" style={{ fontSize: '1rem' }}>{totalQuantity}개</div>
-                </div>
+
+                {discountAmount > 0 &&
+                    <div className="mb-3">
+                        <div className="text-muted small mb-1">할인 금액</div>
+                        <div className="ps-1 fs-4 fw-bold text-danger">-{discountAmount.toLocaleString()}원</div>
+                    </div>
+                }
 
                 <div className="mb-3">
                     <div className="text-muted small mb-1">최종 결제 금액</div>
                     <div className="ps-1 fs-4 fw-bold text-success">{finalAmount.toLocaleString()}원</div>
                 </div>
 
-                <div className="d-flex justify-content-center mt-3">
+                <div className="d-flex justify-content-center mt-4 py-2">
                     <Form.Check
                         className={skipReceipt ? "text-success" : "text-secondary"}
                         type="checkbox"

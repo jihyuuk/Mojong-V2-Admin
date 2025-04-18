@@ -63,8 +63,8 @@ function AllHistoryPage() {
                     <ListGroup variant='flush' className='border-top border-bottom'>
 
                         {histories.map((history, index) => (
-                            <Link to={`/all-history/${history.id}`}>
-                                <ListGroup.Item key={index}>
+                            <Link key={index} to={`/all-history/${history.id}`}>
+                                <ListGroup.Item>
                                     <div className='d-flex justify-content-between py-1'>
                                         <div>
                                             <div className='fw-bold mb-1 text-success' style={{ fontSize: '1.15rem' }}>

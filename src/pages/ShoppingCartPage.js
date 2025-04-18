@@ -94,9 +94,9 @@ function ShoppingCartPage() {
                                 </div>
                             }
 
-                            <div className=" d-flex justify-content-between fs-5 fw-medium">
-                                <div>총 금액 :</div>
-                                <div className="fw-semibold text-success">{finalAmount.toLocaleString("ko-KR")}원</div>
+                            <div className=" d-flex justify-content-between fs-5 fw-medium fw-semibold ">
+                                <div className="text-success">총 금액 :</div>
+                                <div className={finalAmount > 0 ? "text-success" : "text-danger"}>{finalAmount.toLocaleString("ko-KR")}원</div>
                             </div>
                         </div>
 

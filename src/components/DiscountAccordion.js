@@ -56,7 +56,7 @@ function DiscountAccordion({ setDiscountAmount, totalPrice }) {
                                     label="금액 (₩)"
                                     value="fixed"
                                     checked={discountMethod === "won"}
-                                    onClick={() => radioClick("won")}
+                                    onChange={() => radioClick("won")}
                                 />
                                 <Form.Check
                                     type="radio"
@@ -65,7 +65,7 @@ function DiscountAccordion({ setDiscountAmount, totalPrice }) {
                                     label="비율 (%)"
                                     value="percent"
                                     checked={discountMethod === "percent"}
-                                    onClick={() => radioClick("percent")}
+                                    onChange={() => radioClick("percent")}
                                 />
                             </div>
                         </div>
