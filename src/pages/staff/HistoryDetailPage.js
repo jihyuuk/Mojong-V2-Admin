@@ -31,14 +31,25 @@ function HistoryDetailPage() {
 
     //영수증 인쇄하기
     const handlePrint = () => {
-        //서버로직
 
+        //로딩
         setPrintLoading(true);
 
-        setTimeout(() => {
-            setPrintLoading(false);
-            showTost("인쇄성공!");
-        }, (2000));
+        //서버로직
+        axiosWithToken.post(`/print/${id}`)
+            .then((response) => {
+
+                if(response.data.printOK){
+                    showTost("인쇄 성공!");
+                }else{
+                    showTost("인쇄 실패!");
+                }
+                setPrintLoading(false);
+            })
+            .catch(() => {
+                showTost("인쇄 실패!");
+                setPrintLoading(false);
+            });
     }
 
 
