@@ -182,7 +182,7 @@ function MainPage() {
                         <div id={`section${index}`} key={category.name} className='mb-4 bg-white shadow-sm' ref={(el) => (sectionRefs.current[index] = el)}>
 
                             {/* 카테고리 명 */}
-                            <div className='fs-2 fw-bold p-3 pb-0'>{category.name}</div>
+                            <div className='fs-2 fw-bold p-3 pb-0 text-success'>{category.name}</div>
 
                             {/* 해당 아이템들 */}
                             {category.items.map((item) => <ItemList key={item.id} item={item} />)}
