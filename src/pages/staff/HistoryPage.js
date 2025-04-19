@@ -3,10 +3,14 @@ import SubHeader from "../../components/SubHeader"
 import { ListGroup, Pagination } from "react-bootstrap";
 import { Link, Outlet } from "react-router-dom";
 import axiosWithToken from "../../utils/axiosWithToken"
+import LoadingContent from "../../components/LoadingContent";
 
 function HistoryPage() {
 
     const [histories, setHistories] = useState([]);
+
+    //로딩
+    const [isLoading, setIsLoading] = useState(true);
 
     //현재 페이지
     const [nowPage, setNowPage] = useState(0);
@@ -40,11 +44,15 @@ function HistoryPage() {
 
     //서버에 page 요청
     const fetchPage = (page) => {
+
+        setIsLoading(true);
+
         axiosWithToken.get("/history?size=10&page=" + page)
             .then((response) => {
                 setHistories(response.data.content);
                 setNowPage(response.data.number);
                 setTotalPage(response.data.totalPages);
+                setIsLoading(false);
             })
             .catch(() => {
                 alert("판매기록을 불러오지 못하였습니다.")
@@ -58,60 +66,66 @@ function HistoryPage() {
 
                 <SubHeader title={"판매 기록"} />
 
-                <div className="flex-grow-1 overflow-y-auto pb-5">
+                {isLoading
+                    ?
+                    <LoadingContent />
+                    :
+                    <div className="flex-grow-1 overflow-y-auto pb-5">
 
-                    <ListGroup variant='flush' className='border-top border-bottom'>
+                        <ListGroup variant='flush' className='border-top border-bottom'>
 
-                        {histories.map((history, index) => (
-                            <Link key={index} to={`/history/${history.id}`}>
-                                <ListGroup.Item >
-                                    <div className='d-flex justify-content-between py-1'>
-                                        <div>
-                                            <div className='fw-bold mb-1 text-success' style={{ fontSize: '1.15rem' }}>
-                                                {history.title}
+                            {histories.map((history, index) => (
+                                <Link key={index} to={`/history/${history.id}`}>
+                                    <ListGroup.Item >
+                                        <div className='d-flex justify-content-between py-1'>
+                                            <div>
+                                                <div className='fw-bold mb-1 text-success' style={{ fontSize: '1.15rem' }}>
+                                                    {history.title}
+                                                </div>
+                                                <div className='text-secondary'>판매번호 #{history.id}</div>
+                                                <div className='text-secondary'>
+                                                    {history.date}
+                                                </div>
                                             </div>
-                                            <div className='text-secondary'>판매번호 #{history.id}</div>
-                                            <div className='text-secondary'>
-                                                {history.date}
+                                            <div className='d-flex align-items-center justify-content-end'>
+                                                <div className='fw-semibold fs-5'>
+                                                    {history.finalAmount.toLocaleString('ko-KR')}원
+                                                </div>
                                             </div>
                                         </div>
-                                        <div className='d-flex align-items-center justify-content-end'>
-                                            <div className='fw-semibold fs-5'>
-                                                {history.finalAmount.toLocaleString('ko-KR')}원
-                                            </div>
-                                        </div>
-                                    </div>
-                                </ListGroup.Item>
-                            </Link>
-                        ))}
-
-                    </ListGroup>
-
-
-                    {totalPage > 1 &&
-                        <Pagination className='mt-4 justify-content-center gap-1 my-pagination'>
-
-                            {startPage >= pageCount &&
-                                <Pagination.Prev onClick={() => fetchPage(startPage - 1)} />
-                            }
-
-                            {pageRange.map((page) => (
-                                <Pagination.Item
-                                    key={page}
-                                    active={page === nowPage}
-                                    onClick={() => fetchPage(page)}
-                                >
-                                    {page + 1}
-                                </Pagination.Item>
+                                    </ListGroup.Item>
+                                </Link>
                             ))}
 
-                            {endPage < totalPage - 1 &&
-                                <Pagination.Next onClick={() => fetchPage(endPage + 1)} />
-                            }
+                        </ListGroup>
 
-                        </Pagination>
-                    }
-                </div>
+
+                        {totalPage > 1 &&
+                            <Pagination className='mt-4 justify-content-center gap-1 my-pagination'>
+
+                                {startPage >= pageCount &&
+                                    <Pagination.Prev onClick={() => fetchPage(startPage - 1)} />
+                                }
+
+                                {pageRange.map((page) => (
+                                    <Pagination.Item
+                                        key={page}
+                                        active={page === nowPage}
+                                        onClick={() => fetchPage(page)}
+                                    >
+                                        {page + 1}
+                                    </Pagination.Item>
+                                ))}
+
+                                {endPage < totalPage - 1 &&
+                                    <Pagination.Next onClick={() => fetchPage(endPage + 1)} />
+                                }
+
+                            </Pagination>
+                        }
+                    </div>
+                }
+
             </div>
 
             <Outlet />

@@ -5,6 +5,7 @@ import SubHeader from '../../components/SubHeader';
 import MotionPage from '../../motions/MotionPage';
 import axiosWithToken from "../../utils/axiosWithToken"
 import { useTost } from '../../utils/TostProvider';
+import LoadingContent from '../../components/LoadingContent';
 
 function HistoryDetailPage() {
 
@@ -59,14 +60,9 @@ function HistoryDetailPage() {
 
                 <SubHeader title={"판매 상세"} />
 
-                {!saleDetail ? 
-                
-                    <div className='flex-grow-1  d-flex align-items-center justify-content-center'>
-                        <Spinner animation="border"  variant="secondary" />
-                    </div> 
-                
-                :
-
+                {!saleDetail ?
+                    <LoadingContent />
+                    :
                     <div className="flex-grow-1 overflow-y-auto pb-5">
 
                         <ListGroup className='fw-medium'>
