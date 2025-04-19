@@ -1,4 +1,3 @@
-import axios from "axios";
 import React from "react";
 import { Button, ListGroup, ListGroupItem } from "react-bootstrap";
 import axiosWithToken from "../utils/axiosWithToken";

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import SubHeader from '../../components/SubHeader';
 import MemeberView from '../../components/MemberView';
 import ApprovalView from '../../components/ApprovalView';
-import axios from 'axios';
 import axiosWithToken from '../../utils/axiosWithToken';
 
 function MemberPage() {

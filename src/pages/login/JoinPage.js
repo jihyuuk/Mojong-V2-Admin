@@ -36,7 +36,7 @@ function JoinPage() {
     const fetchJoin = async () => {
         try {
             const response = await axios.post(
-                `${process.env.REACT_APP_BASE_URL}/join`,
+                '/api/join',
                 `username=${username}&password=${pwd}`,
                 {
                     headers: {
