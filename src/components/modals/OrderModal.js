@@ -89,7 +89,7 @@ function OrderModal({ showModal, setShowModal, finalAmount, payment, discountAmo
                         </div>
                     }
 
-                    <div className="mb-3">
+                    <div className="">
                         <div className="text-muted small mb-1">최종 결제 금액</div>
                         <div className="ps-1 fs-4 fw-semibold text-success">{finalAmount.toLocaleString()}원</div>
                     </div>

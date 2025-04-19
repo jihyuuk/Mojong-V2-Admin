@@ -22,6 +22,7 @@ function CashierOrderPage() {
     //주문상태
     const [orderState, setOrderState] = useState("loading");
     const [saleId, setSaleId] = useState(-1);
+    const [printOK, setPrintOK] = useState(true);
 
     //주문 로직
     useEffect(() => {
@@ -39,8 +40,9 @@ function CashierOrderPage() {
                 setCartItems([]);
                 fetchMenu();
                 //상태적용
-                setOrderState("success");
                 setSaleId(response.data.saleId);
+                setPrintOK(response.data.printOK);
+                setOrderState("success");
             })
             .catch((error) => {
                 setOrderState("fail");
@@ -72,6 +74,13 @@ function CashierOrderPage() {
                         {/* 주문 성공 메시지 */}
                         <div className="mt-3 fs-1 fw-semibold">주문 번호 : #{saleId}</div>
                         <div className="mt-1">주문이 정상적으로 처리되었습니다.</div>
+
+                        {/* 영수증 출력 실패 */}
+                        {!orderData.skipReceipt && !printOK &&
+                            <div className="mt-5 fs-4 fw-semibold text-danger">
+                                영수증 출력 실패!
+                            </div>
+                        }
                     </div>
 
                     <Footer value={"홈으로"} show={true} onClick={() => {
