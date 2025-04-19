@@ -4,7 +4,7 @@ function MainFooter() {
 
     return (
         <>
-        <div style={{ height: "11rem" }}/>
+        <div style={{ height: "20rem" }}/>
 
         <div className="text-center text-secondary small pb-3 opacity-75">
             {/* 브랜드명 */}
