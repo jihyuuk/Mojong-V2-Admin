@@ -88,7 +88,7 @@ function JoinPage() {
         }
 
         //비밀번호가 다를시에
-        if (pwd != pwdCheck) {
+        if (pwd !== pwdCheck) {
             setFbMsgPwd('');
             setFbMsgPwdCheck("비밀번호가 일치하지 않습니다.");
             setInvaildPwd(true);

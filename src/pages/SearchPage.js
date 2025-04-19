@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Form } from "react-bootstrap";
-import SearchList from "../components/SearchList";
+import { Form } from "react-bootstrap";
 import ItemList from "../components/ItemList";
 import { useMenu } from "../utils/MenuProvider";
 
