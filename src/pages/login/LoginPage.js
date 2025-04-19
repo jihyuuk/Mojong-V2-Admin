@@ -43,7 +43,7 @@ function LonginPage() {
 
         //서버 로그인 요청
         axios.post(
-            '/api/login',
+            process.env.NODE_ENV === 'development' ? "http://192.168.0.3:8080/login" : "/api/login",
             `username=${username}&password=${password}`,
             { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
         )
