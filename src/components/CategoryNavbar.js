@@ -12,6 +12,7 @@ function CategoryNavbar({ contentRef, sectionRefs }) {
 
     //DOM 요소 캐싱
     const categoryRefs = useRef({});
+    const stopScrollEvent = useRef(false);
 
     //메뉴 2줄로 나누기=============================================================================
     const totalLength = menu.reduce((sum, cat) => sum + cat.name.length, 0);
@@ -34,18 +35,36 @@ function CategoryNavbar({ contentRef, sectionRefs }) {
 
     //카테고리 클릭시 (카테고리 id)
     const onCatClick = (id) => {
+
+        // 관성 스크롤 깨트리기 (없어도 괜춘)
+        // const container = contentRef.current;
+        // container.scrollTop += 1;
+        // container.scrollTop -= 1;
+
+        //스크롤 감지 막기
+        stopScrollEvent.current = true;
+
         setActiveCat(id); //활성화 카테고리 변경
 
-        moveCategory(id); //카테고리 중앙으로 이동
+        moveCategory(id); //카테고리 중앙으로 이동 <= 중앙 이동시에 스크롤많아져서 nearest로 변경ㅜㅜ
         moveSection(id); // 해당 섹션으로 자동 스크롤 <= 스크롤에서 그냥 바로 이동하는 걸로 변경 ㅠㅠ
+
+        // 스크롤 감지 다시 켜기 (300ms 뒤)
+        setTimeout(() => {
+            stopScrollEvent.current = false;
+        }, 300);
     }
 
     //카테고리 중앙으로 이동
     const moveCategory = (id) => {
+
+        // 리페인트용 없어도 괜춘
+        // categoryRefs.current[id].scrollLeft += 1;
+        // categoryRefs.current[id].scrollLeft -= 1;
+
         categoryRefs.current[id]?.scrollIntoView({
             behavior: "smooth",
-            block: "center",
-            inline: "center",
+            inline: "nearest",
         });
     }
 
@@ -59,21 +78,37 @@ function CategoryNavbar({ contentRef, sectionRefs }) {
 
         if (!container || !element) return;
 
-        // 해당 요소의 위치 계산 (container 기준으로)
-        const elementPosition = element.getBoundingClientRect().top + container.scrollTop;
-        const offsetPosition = elementPosition - container.offsetTop;
+        // 관성 중단 (옵션)
+        container.scrollTop += 1;
+        container.scrollTop -= 1;
 
-        // 부드러운 스크롤 효과 추가
-        container.scrollTo({
-            top: offsetPosition,
-            behavior: 'auto', //<- smooth가 이쁜데 직원입장에서는 없는게 훨어어얼씬 빠르고 편함 ㅠㅠ
+        // 첫 번째 프레임: 레이아웃 안정화
+        requestAnimationFrame(() => {
+            //body기준으로 offset 잡힘
+            const offset = element.offsetTop - container.offsetTop;
+
+            // 두 번째 프레임: 스크롤 적용
+            requestAnimationFrame(() => {
+                container.scrollTo({
+                    top: offset,
+                    behavior: 'auto',
+                });
+
+                // 세 번째 프레임: 리페인트 트리거 (혹시 몰라서, 없어도 동작하긴함)
+                requestAnimationFrame(() => {
+                    container.scrollTop += 1;
+                    container.scrollTop -= 1;
+                });
+            });
         });
     }
 
     // 스크롤 핸들러
     const scrollHandler = useCallback(() => {
 
-        const containerTop = contentRef.current?.getBoundingClientRect().top || 0;
+        if (stopScrollEvent.current) return; // 스크롤 무시!
+
+        const containerTop = contentRef.current?.offsetTop|| 0;
         const offset = containerTop + 30;
 
         for (let i = menu.length - 1; i >= 0; i--) {
@@ -113,7 +148,7 @@ function CategoryNavbar({ contentRef, sectionRefs }) {
 
 
     return (
-        <div className="overflow-x-auto pb-1 border-bottom">
+        <div className="overflow-x-auto pb-1 border-bottom" style={{scrollPaddingInline:"1rem"}}>
 
             <Stack direction="horizontal" gap={3} className='px-2 text-nowrap'>
                 {row1.map((category) => {
