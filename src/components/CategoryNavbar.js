@@ -108,8 +108,9 @@ function CategoryNavbar({ contentRef, sectionRefs }) {
 
         if (stopScrollEvent.current) return; // 스크롤 무시!
 
-        const containerTop = contentRef.current?.offsetTop|| 0;
-        const offset = containerTop + 30;
+        const containerTop = contentRef.current.offsetTop;
+        const containerHeight = contentRef.current.offsetHeight;
+        const offset = (containerTop + containerHeight)/2;
 
         for (let i = menu.length - 1; i >= 0; i--) {
             const newCatId = menu[i]?.categoryId;
