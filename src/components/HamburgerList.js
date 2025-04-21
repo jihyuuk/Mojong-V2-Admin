@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { Button, ListGroup, Offcanvas } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Button, ListGroup, Offcanvas, Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useToken } from "../utils/TokenContext";
+import axiosWithToken from "../utils/axiosWithToken";
 
 function HamburgerList() {
 
@@ -14,6 +15,29 @@ function HamburgerList() {
   const [show, setShow] = useState(false);
   const toggleShow = () => setShow(true);
   const handleClose = () => setShow(false);
+
+  //오늘 판매 정보
+  const [loading, setLoading] = useState(true);
+  const [todaySaleInfo, setTodaySaleInfo] = useState();
+
+  //햄버거 열리면 판매정보 불러오기
+  useEffect(() => {
+    if (!show) return;
+
+    setLoading(true);
+
+    axiosWithToken.get("/today")
+      .then((response) => {
+        //맴버 업데이트
+        setTodaySaleInfo(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("오늘의 판매 정보 불러오기 실패!");
+      });
+
+  }, [show])
+
 
   //로그아웃
   const logout = () => {
@@ -42,7 +66,40 @@ function HamburgerList() {
         {/* 목록 */}
         <Offcanvas.Body id='hambergur-menu' className='d-flex flex-column'>
 
-          <ListGroup variant='flush fs-5 mt-4'>
+          {/* 오늘의 판매 통계 */}
+          <div className='border border-success-subtle rounded-3 p-2 mb-3'>
+            <div className='fs-5 fw-semibold mb-2'>🏅 오늘 판매 업적 </div>
+            {loading ?
+              <>
+                불러오는중... <Spinner animation="border" size="sm" />
+              </>
+              :
+              <>
+                <div>
+                  <div>판매: {todaySaleInfo.count.toLocaleString('ko-KR')}건</div>
+                  <div>총액: {todaySaleInfo.amount.toLocaleString('ko-KR')}원</div>
+                </div>
+
+                {/* 관리자만 */}
+                {role === 'ROLE_ADMIN' &&
+                  <div className='mt-2'>
+                    <div>전체 판매: {todaySaleInfo.allCount.toLocaleString('ko-KR')}건</div>
+                    <div>전체 총액: {todaySaleInfo.allAmount.toLocaleString('ko-KR')}원</div>
+                  </div>
+                }
+
+                {/* 판매왕 */}
+                {todaySaleInfo.topSeller &&
+                  <div className="mt-3 bg-white p-2 border border-success-subtle rounded text-center shadow-sm">
+                    <div className="fs-6 fw-bold text-success">🏆 오늘의 판매왕 🏆</div>
+                    <div className="fs-5 fw-semibold text-dark-emphasis mt-1">{todaySaleInfo.topSeller}</div>
+                  </div>
+                }
+              </>
+            }
+          </div>
+
+          <ListGroup variant='flush fs-5'>
             <ListGroup.Item className='py-2'>
               <Link to="/history">
                 <div>
@@ -109,9 +166,11 @@ function HamburgerList() {
           </ListGroup>
 
           {/* 로그아웃버튼 */}
-          <Button variant="outline-danger" className="w-100 rounded-5 mt-auto mb-2" onClick={logout}>
-            로그아웃
-          </Button>
+          <div className="mt-auto pt-4">
+            <Button variant="outline-danger" className="w-100 rounded-5" onClick={logout}>
+              로그아웃
+            </Button>
+          </div>
 
         </Offcanvas.Body>
 
