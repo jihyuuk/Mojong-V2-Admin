@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useTost } from '../utils/TostProvider';
 import SubHeader from '../components/SubHeader';
 import { useLocation, useNavigate } from 'react-router-dom';
-import MotionPage from '../motions/MotionPage';
 import { useShoppingCart } from '../utils/ShoppingCartProvider';
-import { Button } from 'react-bootstrap';
+import Footer from '../components/Footer';
 
 function DetailPage() {
 
@@ -114,23 +113,24 @@ function DetailPage() {
     if (!item) return null;
 
     return (
-        //애니메이션 적용
-        <MotionPage>
+        //애니메이션 적용 취소
+        //<MotionPage>
+        <div className='z-2 position-absolute top-0 start-0 w-100 h-100 bg-white'>
             <div className='d-flex flex-column h-100 bg-white'>
 
                 {/* 헤더 */}
-                <SubHeader title={"상품 상세"} />
+                <SubHeader title={item.name} />
 
-                {/* 메인 */}
-                <main className='flex-grow-1 overflow-y-auto p-3 pt-0'>
-                    <div className='d-flex align-items-center w-100 mt-2'>
-                        {/* 이름, 단가 */}
-                        <div className='flex-grow-1 pe-1'>
-                            <div className="fw-semibold fs-4">
-                                {item.name}
+                {/* 상품 정보*/}
+                <div className='px-3'>
+                    <div className='d-flex  w-100 mt-1'>
+                        {/* 이름, 설명, 단가 */}
+                        <div className='flex-grow-1 pe-2'>
+                            <div className='text-secondary mt-1'>
+                                {item.description}
                             </div>
                             <div className="text-success fw-semibold mt-1">
-                                ₩ {item.price.toLocaleString('ko-KR')}
+                                단가: ₩ {item.price.toLocaleString('ko-KR')}
                             </div>
                         </div>
 
@@ -141,76 +141,62 @@ function DetailPage() {
                             </div>
                         }
                     </div>
+                </div>
 
-                    {/* 설명 */}
-                    <div className='text-secondary mt-2'>
-                        {item.description}
-                    </div>
-
-                </main>
-
-                {/* 푸터 */}
-                <footer
-                    className='border-top border-success-subtle rounded-4'
-                    style={{
-                        boxShadow: '0 -4px 10px rgba(0, 0, 0, 0.05)'
-                    }}
-                >
-
-                    {/* 수량 */}
-                    <div className='text-center py-4'>
+                {/* 수량 */}
+                <div className='flex-grow-1 overflow-y-auto'>
+                    <div className='d-flex flex-column justify-content-center align-items-center h-100'>
                         <div className='display-3 fw-semibold text-success'>{quantity.toLocaleString('ko-KR')}개</div>
+                        <div className='mt-3 fw-medium text-secondary fs-5'>합계 {total.toLocaleString('ko-KR')}원</div>
+                    </div>
+                </div>
+
+                {/* 넘버패드 */}
+                <div className='mt-auto'>
+                    <div className='d-flex gap-2 text-center fw-semibold text-success px-2 mb-1'>
+                        {plusValue.map((value, index) =>
+                            <div
+                                key={index}
+                                onClick={() => plusButtonClick(value)}
+                                className='w-100 rounded-3 py-2 bg-success-subtle'
+                                onTouchStart={(e) => {
+                                    e.currentTarget.classList.remove('bg-success-subtle');
+                                    e.currentTarget.classList.add('bg-secondary-subtle', 'text-secondary');
+                                }}
+                                onTouchEnd={(e) => {
+                                    e.currentTarget.classList.remove('bg-secondary-subtle', 'text-secondary');
+                                    e.currentTarget.classList.add('bg-success-subtle');
+                                }}
+                            >
+                                +{value}
+                            </div>
+                        )}
                     </div>
 
-                    {/* 넘버패드 */}
-                    <div>
-                        <div className='d-flex gap-2 text-center fw-semibold text-success px-2 mb-1'>
-                            {plusValue.map((value, index) =>
+                    {numberPad.map((row, rowIdx) =>
+                        <div key={"row" + rowIdx} className='d-flex text-center fw-semibold fs-4'>
+                            {row.map((number, colIdx) =>
                                 <div
-                                    key={index}
-                                    onClick={() => plusButtonClick(value)}
-                                    className='w-100 rounded-3 py-1 bg-success-subtle'
-                                    onTouchStart={(e) => {
-                                        e.currentTarget.classList.remove('bg-success-subtle');
-                                        e.currentTarget.classList.add('bg-secondary-subtle', 'text-secondary');
-                                    }}
-                                    onTouchEnd={(e) => {
-                                        e.currentTarget.classList.remove('bg-secondary-subtle', 'text-secondary');
-                                        e.currentTarget.classList.add('bg-success-subtle');
-                                    }}
+                                    key={"num" + colIdx}
+                                    className='w-100 py-3 rounded-4 mb-1'
+                                    onClick={() => keyClicked(number)}
+                                    onTouchStart={(e) => e.currentTarget.classList.add('bg-secondary-subtle', 'text-secondary')}
+                                    onTouchEnd={(e) => e.currentTarget.classList.remove('bg-secondary-subtle', 'text-secondary')}
                                 >
-                                    +{value}
+                                    {number}
                                 </div>
                             )}
                         </div>
+                    )}
 
-                        {numberPad.map((row, rowIdx) =>
-                            <div key={"row" + rowIdx} className='d-flex text-center fw-semibold fs-4'>
-                                {row.map((number, colIdx) =>
-                                    <div
-                                        key={"num" + colIdx}
-                                        className='w-100 py-3 rounded-4'
-                                        onClick={() => keyClicked(number)}
-                                        onTouchStart={(e) => e.currentTarget.classList.add('bg-secondary-subtle', 'text-secondary')}
-                                        onTouchEnd={(e) => e.currentTarget.classList.remove('bg-secondary-subtle', 'text-secondary')}
-                                    >
-                                        {number}
-                                    </div>
-                                )}
-                            </div>
-                        )}
+                </div>
 
-                    </div>
-
-                    {/* 장바구니 담기 버튼 */}
-                    <div className="p-2 py-3">
-                        <Button variant="success" disabled={total <= 0} className="w-100 fs-5 fw-semibold p-2 rounded-3" onClick={addCart}>
-                            {total > 0 ? `${total.toLocaleString('ko-KR')}원 담기` : '수량을 입력해주세요'}
-                        </Button>
-                    </div>
-                </footer>
-            </div >
-        </MotionPage>
+                {/* 장바구니 담기 버튼 */}
+                <Footer value={total > 0 ? '장바구니 담기' : '수량을 입력해주세요'} disabled={total <= 0} onClick={addCart} show={true} />
+                
+            </div>
+        </div>
+        //</MotionPage>
     );
 }
 
