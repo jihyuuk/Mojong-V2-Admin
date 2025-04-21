@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Button, ListGroup, ListGroupItem, Spinner } from 'react-bootstrap';
+import { Button, ListGroup, ListGroupItem, Table } from 'react-bootstrap';
 import SubHeader from '../../components/SubHeader';
 import MotionPage from '../../motions/MotionPage';
 import axiosWithToken from "../../utils/axiosWithToken"
@@ -69,25 +69,35 @@ function HistoryDetailPage() {
 
                             {/* 판매내역 */}
                             <ListGroupItem>
-                                <div className='fw-semibold text-success fs-5 mb-2'>판매번호 #{saleDetail.id}</div>
+                                <div className='fw-semibold text-success fs-4 mb-2'>판매번호 #{saleDetail.id}</div>
 
                                 {/* 금액 부분 */}
-                                <div className='border border-success-subtle p-3 rounded-3'>
-                                    {saleDetail.items.map((item, index) => (
-                                        <div key={index} className='d-flex flex-wrap mt-1'>
-                                            <div>
-                                                {index + 1}. {item.name} - {item.price.toLocaleString('ko-KR')} x {item.quantity}
-                                            </div>
-                                            <div className='ms-auto'>
-                                                {item.totalAmount.toLocaleString('ko-KR')}원
-                                            </div>
-                                        </div>
-                                    ))}
-
-                                    <hr />
+                                <div className='border border-success-subtle p-1 rounded-3'>
+                                    <Table responsive="md" className='mb-0'>
+                                        <thead className='border-success-subtle'>
+                                            <tr className='text-center'>
+                                                <th>상품명</th>
+                                                <th className='text-end'>수량</th>
+                                                <th className='text-end'>단가</th>
+                                                <th className='text-end'>금액</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                saleDetail.items.map((item, index) => (
+                                                    <tr key={index}>
+                                                        <td>{index + 1}. {item.name}</td>
+                                                        <td className='text-end'> {item.quantity.toLocaleString('ko-KR')}</td>
+                                                        <td className='text-end'> {item.price.toLocaleString('ko-KR')}</td>
+                                                        <td className='text-end'> {item.totalAmount.toLocaleString('ko-KR')}</td>
+                                                    </tr>
+                                                ))
+                                            }
+                                        </tbody>
+                                    </Table>
 
                                     {saleDetail.discountAmount > 0 &&
-                                        <>
+                                        <div className='p-2 border-top'>
                                             <div className='d-flex justify-content-between'>
                                                 <div className='text-secondary'>
                                                     합계금액
@@ -104,23 +114,24 @@ function HistoryDetailPage() {
                                                     -{saleDetail.discountAmount.toLocaleString('ko-KR')}원
                                                 </div>
                                             </div>
-
-                                            <hr />
-
-                                        </>
+                                        </div>
                                     }
 
+                                    <hr className='mt-1 border-success' />
 
-                                    <div className={`d-flex justify-content-between fw-semibold fs-4`}>
+                                    <div className="d-flex justify-content-between fw-semibold fs-4 px-2 pb-3">
                                         <div>
-                                            계산 금액
+                                            총 금액
                                         </div>
                                         <div>
                                             {saleDetail.finalAmount.toLocaleString('ko-KR')}원
                                         </div>
                                     </div>
+
                                 </div>
                             </ListGroupItem>
+
+
 
                             {/* 결제일시 */}
                             <ListGroupItem>

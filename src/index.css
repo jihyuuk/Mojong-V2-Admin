@@ -29,3 +29,8 @@ html,body, #root {
   -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
 }
+
+/* 테이블 마지막 요소 경계선 없애기 */
+table tbody tr:last-child td {
+  border-bottom: none !important;
+}
