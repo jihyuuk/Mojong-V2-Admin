@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import SubHeader from "../../components/SubHeader";
 import { Form, FormControl } from "react-bootstrap";
 import Footer from "../../components/Footer";
@@ -15,11 +15,15 @@ function AddItemPage() {
     const { showTost } = useTost();
     const navigate = useNavigate();
 
+    //이미지 인풋 
+    const imgRef = useRef();
+
     //인풋값
     const [category, setCategory] = useState(-1);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState(0);
+    const [imgUrl, setImageUrl] = useState('');
 
     //검증
     const [invalidCategory, setInvaildCategory] = useState(false);
@@ -87,7 +91,7 @@ function AddItemPage() {
             categoryId: category,
             name: name.trim(),
             description: description.trim(),
-            photo: "", //수정필요
+            photo: imgRef, //수정필요
             price: price,
             stock: 100000, //수정필요
         }
@@ -111,6 +115,34 @@ function AddItemPage() {
                 alert("카테고리 추가 실패");
             })
     }
+
+
+
+    //이미지 업로드
+    const handleImageUpload = (e) => {
+        //파일 받아오기
+        const file = e.target.files[0];
+        if (!file) return;
+
+        //formdata 생성
+        const formData = new FormData();
+        formData.append("image", file);
+
+        //서버 전송
+        axiosWithToken.post("/upload", formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+        })
+            .then((res) => {
+                setImageUrl(res.data);
+                showTost("이미지 업로드 성공!");
+            })
+            .catch((e) => {
+                showTost("이미지 업로드 실패!");
+                setImageUrl("");
+                imgRef.current.value = "";
+            });
+    }
+
 
 
     return (
@@ -153,6 +185,19 @@ function AddItemPage() {
                             <Form.Control size="lg" type="text" pattern="\d*" inputMode="numeric" placeholder='ex) 500원' isInvalid={invalidPrice} value={price === 0 ? '' : price.toLocaleString('ko-KR')} onChange={(e) => priceChange(e.target.value.trim())} />
                             <FormControl.Feedback type='invalid'>{fbPrice}</FormControl.Feedback>
                         </Form.Group>
+
+                        {/* 사진 */}
+                        <Form.Group className="mb-3">
+                            <Form.Label className='fs-5 fw-medium text-success'>사진</Form.Label>
+                            <Form.Control ref={imgRef} size="lg" type="file" accept="image/*" onChange={handleImageUpload} />
+                        </Form.Group>
+
+                        {/* 사진 미리보기 */}
+                        {imgUrl &&
+                            <div className="border rounded-3 mb-5" style={{ height: "100px", width: "100px" }}>
+                                <img src={imgUrl} alt="상품 사진"  style={{width: "100%",height: "100%",objectFit: "cover",}}/>
+                            </div>
+                        }
                     </Form>
 
                 </div>
