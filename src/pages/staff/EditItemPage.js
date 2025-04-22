@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import SubHeader from "../../components/SubHeader";
-import { Form, FormControl } from "react-bootstrap";
+import { Form, FormControl, Spinner } from "react-bootstrap";
 import Footer from "../../components/Footer";
 import MotionPage from "../../motions/MotionPage";
 import { useMenu } from "../../utils/MenuProvider";
@@ -17,6 +17,7 @@ function EditItemPage() {
 
     //이미지 인풋 
     const imgRef = useRef();
+    const [imgLoading, setImgLoading] = useState(false);
 
     //수정할 상품
     const location = useLocation();
@@ -96,7 +97,7 @@ function EditItemPage() {
             categoryId: category,
             name: name.trim(),
             description: description.trim(),
-            photo: imgUrl, 
+            photo: imgUrl,
             price: price,
             stock: 100000, //수정필요
         }
@@ -130,14 +131,14 @@ function EditItemPage() {
         const file = e.target.files[0];
         if (!file) return;
 
+        setImgLoading(true);
+
         //formdata 생성
         const formData = new FormData();
         formData.append("image", file);
 
         //서버 전송
-        axiosWithToken.post("/upload", formData, {
-            headers: { "Content-Type": "multipart/form-data" },
-        })
+        axiosWithToken.post("/upload", formData)
             .then((res) => {
                 setImageUrl(res.data);
                 showTost("이미지 업로드 성공!");
@@ -146,6 +147,9 @@ function EditItemPage() {
                 showTost("이미지 업로드 실패!");
                 setImageUrl(item.photo ?? "");
                 imgRef.current.value = "";
+            })
+            .finally(()=>{
+                setImgLoading(false);
             });
     }
 
@@ -199,8 +203,14 @@ function EditItemPage() {
 
                         {/* 사진 미리보기 */}
                         {imgUrl &&
-                            <div className="border rounded-3 mb-5 overflow-hidden" style={{ height: "100px", width: "100px" }}>
-                                <img src={imgUrl} alt="상품 사진" style={{ width: "100%", height: "100%", objectFit: "cover", }} />
+                            <div className="border rounded-3 mb-5 overflow-hidden  d-flex justify-content-center align-items-center" style={{ height: "100px", width: "100px" }}>
+
+                                {imgLoading ?
+                                    <Spinner variant="secondary" className="m-auto" />
+                                    :
+                                    <img src={imgUrl} alt="상품 사진" style={{ width: "100%", height: "100%", objectFit: "cover", }} />
+                                }
+
                             </div>
                         }
                     </Form>
@@ -211,6 +221,7 @@ function EditItemPage() {
                     value={"수정하기"}
                     show={true}
                     onClick={submit}
+                    disabled={imgLoading}
                 />
 
             </div>
