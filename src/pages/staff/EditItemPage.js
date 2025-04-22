@@ -96,7 +96,7 @@ function EditItemPage() {
             categoryId: category,
             name: name.trim(),
             description: description.trim(),
-            photo: "", //수정필요
+            photo: imgUrl, 
             price: price,
             stock: 100000, //수정필요
         }
@@ -199,7 +199,7 @@ function EditItemPage() {
 
                         {/* 사진 미리보기 */}
                         {imgUrl &&
-                            <div className="border rounded-3 mb-5" style={{ height: "100px", width: "100px" }}>
+                            <div className="border rounded-3 mb-5 overflow-hidden" style={{ height: "100px", width: "100px" }}>
                                 <img src={imgUrl} alt="상품 사진" style={{ width: "100%", height: "100%", objectFit: "cover", }} />
                             </div>
                         }
