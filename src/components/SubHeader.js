@@ -15,7 +15,7 @@ function SubHeader({ title }) {
                 </svg>
             </div>
 
-            <div className='fw-semibold fs-4 position-absolute top-50 start-50 translate-middle'>
+            <div className='fw-semibold fs-4 position-absolute top-50 start-50 translate-middle text-center w-100' style={{ maxWidth: '80vw' }}>
                 {title}
             </div>
 
