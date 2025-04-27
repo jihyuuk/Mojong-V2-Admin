@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-function SubHeader({ title }) {
+function SubHeader({ title, icon, onIconClick }) {
 
     const navigate = useNavigate();
 
@@ -19,7 +19,14 @@ function SubHeader({ title }) {
                 {title}
             </div>
 
-            <div style={{ width: "33px" }} />
+            {/* 오른쪽: 아이콘이 있으면 렌더링, 없으면 33px 빈 칸 */}
+            <div style={{ width: "33px" }}>
+                {icon && (
+                    <div onClick={onIconClick} style={{ cursor: 'pointer' }}>
+                        {icon}
+                    </div>
+                )}
+            </div>
 
         </header>
     )
