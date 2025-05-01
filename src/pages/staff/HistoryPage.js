@@ -140,7 +140,7 @@ function HistoryPage() {
                                             <div className='d-flex justify-content-between py-1'>
                                                 <div>
                                                     <div className='fw-bold mb-1 text-success' style={{ fontSize: '1.15rem' }}>
-                                                        {history.title}
+                                                        {history.title} {history.isCanceled && <span className='text-danger'>(취소됨)</span>}
                                                     </div>
                                                     <div className='text-secondary'>판매번호 #{history.id}</div>
                                                     <div className='text-secondary'>
