@@ -1,6 +1,6 @@
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/locale";
-import React, { forwardRef } from "react";
+import React, { forwardRef, useEffect } from "react";
 import { Button, Modal } from "react-bootstrap";
 import DatePicker, { registerLocale } from "react-datepicker";
 
@@ -9,6 +9,15 @@ import DatePicker, { registerLocale } from "react-datepicker";
 registerLocale("ko", ko);
 
 function DateTimeModal({ showDateModal, setShowDateModal, startDate, setStartDate, endDate, setEndDate, fetchPage, setIsFiltered }) {
+
+    //모달 열렸을때 종료일 기본값 => 지금
+    useEffect(() => {
+        if (showDateModal && !endDate) {
+            const plusOneHour = new Date();
+            plusOneHour.setHours(plusOneHour.getHours() + 1);
+            setEndDate(plusOneHour);
+        }
+    }, [showDateModal]);
 
     const submit = () => {
         //시작날짜가 종료날짜 전인지 검증
