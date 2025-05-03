@@ -85,6 +85,7 @@ function HamburgerList() {
                   <div className='mt-2'>
                     <div>전체 판매: {todaySaleInfo.allCount.toLocaleString('ko-KR')}건</div>
                     <div>전체 총액: {todaySaleInfo.allAmount.toLocaleString('ko-KR')}원</div>
+                    <div className="mt-1">누적: {todaySaleInfo.totalAmount.toLocaleString('ko-KR')}원</div>
                   </div>
                 }
 
