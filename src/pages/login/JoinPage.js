@@ -36,7 +36,7 @@ function JoinPage() {
     const fetchJoin = async () => {
         try {
             const response = await axios.post(
-                process.env.NODE_ENV === 'development' ? "http://192.168.0.3:8080/join" : "/api/join",
+                process.env.NODE_ENV === 'development' ? "http://localhost:8080/join" : "/api/join",
                 `username=${username}&password=${pwd}`,
                 {
                     headers: {
