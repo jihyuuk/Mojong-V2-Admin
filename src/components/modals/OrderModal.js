@@ -10,6 +10,18 @@ function OrderModal({ showModal, setShowModal, finalAmount, payment, discountAmo
 
     const navigate = useNavigate();
 
+    // 1. 출력 모드 상태 변경 (ALL: 전체, RECEIPT: 영수증만, NONE: 모두생략)
+    //  초기 상태를 localStorage에서 가져오기 (없으면 'RECEIPT'가 기본값)
+    const [printMode, setPrintMode] = useState(() => {
+        return localStorage.getItem("lastPrintMode") || "RECEIPT";
+    });
+
+    // 2. 출력 모드가 바뀔 때마다 localStorage에 저장하기
+    const handlePrintModeChange = (mode) => {
+        setPrintMode(mode);
+        localStorage.setItem("lastPrintMode", mode);
+    };
+
     //주문항목 만드는 함수
     const getCartSummary = () => {
         if (!cartItems || cartItems.length === 0) return "주문 항목 없음";
@@ -22,8 +34,6 @@ function OrderModal({ showModal, setShowModal, finalAmount, payment, discountAmo
             : `${firstName}`;
     };
 
-    //영수증 출력 여부
-    const [skipReceipt, setSkipReceipt] = useState(false);
 
     //주문하기
     const sumbit = () => {
@@ -41,7 +51,8 @@ function OrderModal({ showModal, setShowModal, finalAmount, payment, discountAmo
             discountAmount: discountAmount,
             finalAmount: finalAmount,
             payment: payment,
-            skipReceipt: skipReceipt
+            skipReceipt: printMode === 'NONE',
+            skipExchangeReceipt: printMode !== 'ALL'
         }
 
         // 주문 페이지로 이동
@@ -95,15 +106,37 @@ function OrderModal({ showModal, setShowModal, finalAmount, payment, discountAmo
                     </div>
                 </div>
 
-                <div className="d-flex justify-content-center mt-4 py-2">
-                    <Form.Check
-                        className={skipReceipt ? "text-success" : "text-secondary"}
-                        type="checkbox"
-                        id="receipt-toggle"
-                        label="영수증 생략하기"
-                        checked={skipReceipt}
-                        onChange={(e) => setSkipReceipt(e.target.checked)}
-                    />
+                {/* 3. 출력 옵션 영역 수정 */}
+                <div className="p-3 border rounded-3 bg-white mt-3">
+                    <div className="d-flex flex-column gap-2 text-muted">
+                        <Form.Check
+                            type="radio"
+                            id="print-receipt"
+                            name="printOption"
+                            label="영수증"
+                            checked={printMode === 'RECEIPT'}
+                            onChange={() => handlePrintModeChange('RECEIPT')}
+                            className={printMode === 'RECEIPT' ? "fw-bold text-success" : ""}
+                        />
+                        <Form.Check
+                            type="radio"
+                            id="print-all"
+                            name="printOption"
+                            label="영수증 + 교환권"
+                            checked={printMode === 'ALL'}
+                            onChange={() => handlePrintModeChange('ALL')}
+                            className={printMode === 'ALL' ? "fw-bold text-success" : ""}
+                        />
+                        <Form.Check
+                            type="radio"
+                            id="print-none"
+                            name="printOption"
+                            label="모두 생략"
+                            checked={printMode === 'NONE'}
+                            onChange={() => handlePrintModeChange('NONE')}
+                            className={printMode === 'NONE' ? "fw-bold text-danger" : ""}
+                        />
+                    </div>
                 </div>
 
             </ModalBody>
