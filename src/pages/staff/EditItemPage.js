@@ -30,6 +30,7 @@ function EditItemPage() {
     const [description, setDescription] = useState(item?.description ?? '');
     const [price, setPrice] = useState(item?.price ?? 0);
     const [imgUrl, setImageUrl] = useState(item?.photo ?? '');
+    const [isSoldOut, setIsSoldOut] = useState(item?.stock <= 0);
 
     //검증
     const [invalidCategory, setInvaildCategory] = useState(false);
@@ -99,13 +100,13 @@ function EditItemPage() {
             description: description.trim(),
             photo: imgUrl,
             price: price,
-            stock: 100000, //수정필요
+            stock: isSoldOut ? 0 : 100000, //품절설정
         }
 
 
         //서버 연동 로직
         axiosWithToken.put(`/item/${item.id}`, itemParam)
-            .then((resopne) => {
+            .then((res) => {
                 fetchMenu();
                 navigate(-1);
                 showTost("상품 수정 성공");
@@ -148,7 +149,7 @@ function EditItemPage() {
                 setImageUrl(item.photo ?? "");
                 imgRef.current.value = "";
             })
-            .finally(()=>{
+            .finally(() => {
                 setImgLoading(false);
             });
     }
@@ -203,7 +204,7 @@ function EditItemPage() {
 
                         {/* 사진 미리보기 */}
                         {imgUrl &&
-                            <div className="border rounded-3 mb-5 overflow-hidden  d-flex justify-content-center align-items-center" style={{ height: "100px", width: "100px" }}>
+                            <div className="border rounded-3 mb-3 overflow-hidden  d-flex justify-content-center align-items-center" style={{ height: "100px", width: "100px" }}>
 
                                 {imgLoading ?
                                     <Spinner variant="secondary" className="m-auto" />
@@ -213,6 +214,23 @@ function EditItemPage() {
 
                             </div>
                         }
+
+                        {/* 품절 설정 스위치 */}
+                        <Form.Group className="mb-5">
+                            <Form.Label className='fs-5 fw-medium text-success'>품절 설정</Form.Label>
+                            <div className="d-flex align-items-center justify-content-between gap-2 p-3 border rounded">
+                                <div className="text-muted">
+                                    품절 처리하기
+                                </div>
+                                <Form.Check
+                                    type="checkbox"
+                                    id="soldout-switch"
+                                    style={{ scale: "1.5", cursor: "pointer" }}
+                                    checked={isSoldOut}
+                                    onChange={(e) => setIsSoldOut(e.target.checked)} // 스위치 토글 핸들러 활성화
+                                />
+                            </div>
+                        </Form.Group>
                     </Form>
 
                 </div>
