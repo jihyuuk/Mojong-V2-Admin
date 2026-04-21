@@ -22,6 +22,8 @@ import { MenuProvider } from './utils/MenuProvider';
 import AddItemPage from './pages/staff/AddItemPage';
 import EditItemPage from './pages/staff/EditItemPage';
 import AllHistoryPage from './pages/staff/AllHistoryPage';
+import QrOrdersPage from './pages/QrOrdersPage';
+import QrOrderSettingPage from './pages/staff/QrOrderSettingPage';
 
 function App() {
 
@@ -68,6 +70,8 @@ function App() {
                     <Route path="/all-history" element={<AllHistoryPage/>}>
                       <Route path=":id" element={<HistoryDetailPage />} />
                     </Route>
+                    {/* QR 관리 */}
+                    <Route path="/qr-orders/setting" element={<QrOrderSettingPage />} />
                   </Route>
 
                   {/* 로그인, 회원가입 페이지 */}
