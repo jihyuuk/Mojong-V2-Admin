@@ -25,14 +25,14 @@ function QrOrderSettingPage() {
     useEffect(() => {
         axiosWithToken.get('/guest/qr-status')
             .then(res => {
-                const { startTime, endTime, available } = res.data;
+                const { startTime, endTime, enabled } = res.data;
 
                 // "HH:mm" 문자열을 Date 객체로 변환 (오늘 날짜 기준)
                 const today = new Date();
                 if (startTime) setStartDate(parse(startTime, "HH:mm", today));
                 if (endTime) setEndDate(parse(endTime, "HH:mm", today));
 
-                setEnabled(available);
+                setEnabled(enabled);
                 setIsLoading(false);
             })
             .catch(err => {
@@ -61,7 +61,7 @@ function QrOrderSettingPage() {
 
 
         const data = {
-            available: enabled,
+            enabled: enabled,
             startTime: format(startDate, "HH:mm"),
             endTime: format(endDate, "HH:mm")
         };
@@ -144,7 +144,7 @@ function QrOrderSettingPage() {
                                         id="soldout-switch"
                                         style={{ scale: "1.5", cursor: "pointer" }}
                                         onChange={() => setEnabled(prev => !prev)}
-                                        checked={!enabled}
+                                        checked={enabled === false}
                                     />
                                 </div>
                             </Form.Group>
