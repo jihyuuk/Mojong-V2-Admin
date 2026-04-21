@@ -24,6 +24,7 @@ import EditItemPage from './pages/staff/EditItemPage';
 import AllHistoryPage from './pages/staff/AllHistoryPage';
 import QrOrdersPage from './pages/QrOrdersPage';
 import QrOrderSettingPage from './pages/staff/QrOrderSettingPage';
+import QrOrderDetailPage from './pages/QrOrderDetailPage';
 
 function App() {
 
@@ -57,7 +58,9 @@ function App() {
                     <Route path="/history" element={<HistoryPage />}>
                       <Route path=":id" element={<HistoryDetailPage />} />
                     </Route>
-                    <Route path="/qr-orders" element={<QrOrdersPage />} />
+                    <Route path="/qr-orders" element={<QrOrdersPage />}>
+                      <Route path=":id" element={<QrOrderDetailPage />} />
+                    </Route>
 
                 
                     {/* 직원관리 */}

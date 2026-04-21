@@ -65,7 +65,7 @@ function QrOrdersPage() {
                                                             #{String(order.id).padStart(3, '0')}
                                                         </span>
                                                         {order.status === "ACCEPTED" ? (
-                                                            <span className="badge bg-secondary-subtle text-secondary border border-secondary-subtle fw-medium">확인됨</span>
+                                                            <span className="badge bg-secondary-subtle text-secondary border border-secondary-subtle fw-medium">완료</span>
                                                         ) : (
                                                             <span className="badge bg-success-subtle text-success border border-success-subtle fw-medium">신규</span>
                                                         )}
