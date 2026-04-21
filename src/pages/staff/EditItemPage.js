@@ -28,6 +28,7 @@ function EditItemPage() {
     const [category, setCategory] = useState(menu[selectedIdx].categoryId ?? -1);
     const [name, setName] = useState(item?.name ?? '');
     const [description, setDescription] = useState(item?.description ?? '');
+    const [customerDescription, setCustomerDescription] = useState(item?.customerDescription ?? '');
     const [price, setPrice] = useState(item?.price ?? 0);
     const [imgUrl, setImageUrl] = useState(item?.photo ?? '');
     const [isSoldOut, setIsSoldOut] = useState(item?.stock <= 0);
@@ -47,6 +48,7 @@ function EditItemPage() {
 
         setName(name.trim());
         setDescription(description.trim());
+        setCustomerDescription(customerDescription.trim());
 
         if (category === -1) {
             setFbCategory('카테고리를 선택해주세요');
@@ -98,6 +100,7 @@ function EditItemPage() {
             categoryId: category,
             name: name.trim(),
             description: description.trim(),
+            customerDescription: customerDescription.trim(),
             photo: imgUrl,
             price: price,
             stock: isSoldOut ? 0 : 100000, //품절설정
@@ -184,8 +187,14 @@ function EditItemPage() {
 
                         {/* 설명 */}
                         <Form.Group className="mb-3">
-                            <Form.Label className='fs-5 fw-medium text-success'>설명란</Form.Label>
+                            <Form.Label className='fs-5 fw-medium text-success'>직원용 설명란</Form.Label>
                             <Form.Control size="lg" type="text" placeholder='ex) 50구 / 청색판' value={description} onChange={(e) => setDescription(e.target.value)} />
+                        </Form.Group>
+
+                        {/* 고객용 설명 */}
+                        <Form.Group className="mb-3">
+                            <Form.Label className='fs-5 fw-medium text-success'>고객용 설명란</Form.Label>
+                            <Form.Control size="lg" type="text" placeholder='QR 주문시 뜨는 설명란' value={customerDescription} onChange={(e) => setCustomerDescription(e.target.value)} />
                         </Form.Group>
 
                         {/* 가격 */}
