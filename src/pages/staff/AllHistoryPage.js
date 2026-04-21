@@ -137,7 +137,7 @@ function AllHistoryPage() {
                                 {histories.map((history, index) => (
                                     <Link key={index} to={`/all-history/${history.id}`}>
                                         <ListGroup.Item>
-                                            <div className='d-flex justify-content-between py-1'>
+                                            <div className='d-flex gap-2 justify-content-between py-1'>
                                                 <div>
                                                     <div className='fw-bold mb-1 text-success' style={{ fontSize: '1.15rem' }}>
                                                         {history.title} {history.isCanceled && <span className='text-danger'>(취소됨)</span>}
@@ -149,7 +149,7 @@ function AllHistoryPage() {
                                                     </div>
                                                 </div>
                                                 <div className='d-flex align-items-center justify-content-end'>
-                                                    <div className='fw-semibold fs-5'>
+                                                    <div className='fw-semibold fs-5 text-nowrap'>
                                                         {history.finalAmount.toLocaleString('ko-KR')}원
                                                     </div>
                                                 </div>

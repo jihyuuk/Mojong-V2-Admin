@@ -57,6 +57,7 @@ function App() {
                     <Route path="/history" element={<HistoryPage />}>
                       <Route path=":id" element={<HistoryDetailPage />} />
                     </Route>
+                    <Route path="/qr-orders" element={<QrOrdersPage />} />
 
                 
                     {/* 직원관리 */}
