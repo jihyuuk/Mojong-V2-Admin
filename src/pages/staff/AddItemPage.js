@@ -23,6 +23,7 @@ function AddItemPage() {
     const [category, setCategory] = useState(-1);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
+    const [customerDescription, setCustomerDescription] = useState('');
     const [price, setPrice] = useState(0);
     const [imgUrl, setImageUrl] = useState('');
 
@@ -41,6 +42,7 @@ function AddItemPage() {
 
         setName(name.trim());
         setDescription(description.trim());
+        setCustomerDescription(customerDescription.trim());
 
         if (category === -1) {
             setFbCategory('카테고리를 선택해주세요');
@@ -92,6 +94,7 @@ function AddItemPage() {
             categoryId: category,
             name: name.trim(),
             description: description.trim(),
+            customerDescription: customerDescription.trim(),
             photo: imgUrl,
             price: price,
             stock: 100000, //수정필요
@@ -142,7 +145,7 @@ function AddItemPage() {
                 setImageUrl("");
                 imgRef.current.value = "";
             })
-            .finally(()=>{
+            .finally(() => {
                 setImgLoading(false);
             });
     }
@@ -157,7 +160,7 @@ function AddItemPage() {
 
                 <div className='flex-grow-1 overflow-y-auto p-3'>
 
-                    <Form>
+                    <Form className="mb-5">
                         {/* 카테고리 */}
                         <Form.Group className="mb-3">
                             <Form.Label className='fs-5 fw-medium text-success'>카테고리</Form.Label>
@@ -179,8 +182,14 @@ function AddItemPage() {
 
                         {/* 설명 */}
                         <Form.Group className="mb-3">
-                            <Form.Label className='fs-5 fw-medium text-success'>설명란</Form.Label>
+                            <Form.Label className='fs-5 fw-medium text-success'>직원용 설명란</Form.Label>
                             <Form.Control size="lg" type="text" placeholder='ex) 50구 / 청색판' value={description} onChange={(e) => setDescription(e.target.value)} />
+                        </Form.Group>
+
+                        {/* 고객용 설명 */}
+                        <Form.Group className="mb-3">
+                            <Form.Label className='fs-5 fw-medium text-success'>고객용 설명란</Form.Label>
+                            <Form.Control size="lg" type="text" placeholder='QR 주문시 뜨는 설명란' value={customerDescription} onChange={(e) => setCustomerDescription(e.target.value)} />
                         </Form.Group>
 
                         {/* 가격 */}
@@ -198,7 +207,7 @@ function AddItemPage() {
 
                         {/* 사진 미리보기 */}
                         {imgUrl &&
-                            <div className="border rounded-3 mb-5 overflow-hidden  d-flex justify-content-center align-items-center" style={{ height: "100px", width: "100px" }}>
+                            <div className="border rounded-3 overflow-hidden  d-flex justify-content-center align-items-center" style={{ height: "100px", width: "100px" }}>
 
                                 {imgLoading ?
                                     <Spinner variant="secondary" className="m-auto" />
