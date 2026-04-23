@@ -125,7 +125,7 @@ function QrOrderDetailPage() {
 
                                     <div className='ps-1 mb-4'>{orderDetail.date}</div>
                                     {/* 금액 부분 */}
-                                    <div className='border border-success-subtle p-1 rounded-3'>
+                                    <div className='border border-success-subtle p-1 pb-3 rounded-3'>
                                         <Table responsive="md" className='mb-0'>
                                             <thead className='border-success-subtle'>
                                                 <tr className='text-center'>
@@ -163,6 +163,15 @@ function QrOrderDetailPage() {
 
                                     </div>
                                 </ListGroupItem>
+
+                                {/* 주문 처리자 */}
+                                {orderDetail.acceptedUsers && (
+                                    <ListGroupItem>
+                                        <div className='fw-semibold text-success fs-5 mb-2'>주문 담당자</div>
+                                        <div className='ps-1'>{orderDetail.acceptedUsers}</div>
+                                    </ListGroupItem>
+                                )}
+
                             </ListGroup>
 
                         </div>
